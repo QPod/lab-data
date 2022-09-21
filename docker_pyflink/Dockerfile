@@ -6,7 +6,7 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"
 
-ENV JAVA_HOME=/opt/jdk \
+ENV JAVA_HOME=/opt/jdk
 
 COPY work /opt/utils/
 
