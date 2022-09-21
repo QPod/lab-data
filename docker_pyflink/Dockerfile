@@ -11,6 +11,7 @@ ENV JAVA_HOME=/opt/jdk \
 COPY work /opt/utils/
 
 RUN source /opt/utils/script-setup.sh \
+ # && apt-get -qq update -yq --fix-missing && apt-get -qq install -yq --no-install-recommends openjdk-11-jdk-headless
  && setup_java_base && export JAVA_HOME="/opt/jdk" \
  # manually fix pyflink dependencies
  && install_pip /opt/utils/list_install_pip_pyflink.txt \
