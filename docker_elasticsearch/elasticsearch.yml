@@ -1,0 +1,30 @@
+cluster.name: "es-cluster-docker"
+network.host: 0.0.0.0
+bootstrap.memory_lock: false
+path.data: /data/elasticsearch/data
+path.logs: /data/elasticsearch/logs
+node.name: ${HOSTNAME}
+discovery.seed_hosts: ["127.0.0.1", "[::1]"]
+cluster.initial_master_nodes: ["${HOSTNAME}"]
+
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+# http.cors.allow-headers: Authorization
+
+xpack.security.enabled: true
+
+xpack.security.transport.ssl.enabled: true
+
+# To use certificate, run the command below and enable the settings
+# bin/elasticsearch-certutil ca -s && bin/elasticsearch-certutil cert -s --ca elastic-stack-ca.p12
+# mv elastic-*.p12 config/
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.keystore.path: elastic-certificates.p12
+xpack.security.transport.ssl.truststore.path: elastic-certificates.p12
+
+# xpack.security.http.ssl.enabled: true
+# xpack.security.http.ssl.keystore.path: elastic-certificates.p12
+# xpack.security.http.ssl.truststore.path: elastic-certificates.p12
+# xpack.security.http.ssl.client_authentication: none
+# xpack.ssl.verification_mode: none
+
