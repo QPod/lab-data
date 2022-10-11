@@ -1,19 +1,29 @@
 # Distributed under the terms of the Modified BSD License.
 
 ARG BASE_NAMESPACE
-ARG BASE_IMG="base"
+ARG BASE_IMG="atom"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"
 
-ENV JAVA_HOME=/opt/jdk
-
 COPY work /opt/utils/
 
+ENV CONDA_PREFIX=/opt/conda/ \
+    JAVA_HOME=/opt/jdk \
+    PATH=/opt/conda/bin:/opt/jkd/bin:$PATH
+
 RUN source /opt/utils/script-setup.sh \
- # && apt-get -qq update -yq --fix-missing && apt-get -qq install -yq --no-install-recommends openjdk-11-jdk-headless
+ && install_apt /opt/utils/install_list_base.apt \
+ && echo "Install tini" \
+ && setup_tini \
+ && echo "Install Mamba, Python 3.8, and Conda:" \
+ && mkdir -pv ${CONDA_PREFIX} \
+ && setup_mamba && setup_conda_with_mamba "3.8" && install__clean \
+ && ln -sf /opt/conda/bin/python3 /usr/bin/python \
+ && echo "Install JDK:" \
  && setup_java_base && export JAVA_HOME="/opt/jdk" \
- # manually fix pyflink dependencies
+ && echo "Install pyflink: manually fix pyflink dependencies" \
  && install_pip /opt/utils/list_install_pip_pyflink.txt \
  && pip install -U --no-deps apache-flink-libraries apache-flink \
- && install__clean && list_installed_packages
+ && echo "Clean up" \
+ && list_installed_packages && install__clean
