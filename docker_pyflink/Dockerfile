@@ -22,8 +22,8 @@ RUN source /opt/utils/script-setup.sh \
  && ln -sf /opt/conda/bin/python3 /usr/bin/python \
  && echo "Install JDK:" \
  && setup_java_base && export JAVA_HOME="/opt/jdk" \
- && echo "Install pyflink: manually fix pyflink dependencies" \
+ && echo "Install pyflink, and do some updates to packages:" \
+ && pip install -U apache-flink \
  && install_pip /opt/utils/list_install_pip_pyflink.txt \
- && pip install -U --no-deps apache-flink-libraries apache-flink \
  && echo "Clean up" \
  && list_installed_packages && install__clean
