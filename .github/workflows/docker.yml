@@ -20,15 +20,19 @@ env:
 
 jobs:
   qpod_pyflink:
-    name: qpod/pyflink
+    name: qpod/bigdata
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: source ./tool.sh && build_image pyflink latest         docker_pyflink/Dockerfile       && push_image
+      - uses: actions/checkout@v3
+      - run: |
+          source ./tool.sh
+          build_image bigdata latest         docker_bigdata/Dockerfile       && push_image
 
   qpod_elasticsearch:
     name: qpod/elasticsearch
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: source ./tool.sh && build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
+      - uses: actions/checkout@v3
+      - run: |
+          source ./tool.sh
+          build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
