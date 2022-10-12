@@ -1,0 +1,4 @@
+% from: https://github.com/apache/spark/blob/master/python/setup.py#L262
+pyspark
+pandas
+pyarrow

@@ -1,4 +1,5 @@
 % from: https://github.com/apache/flink/blob/master/flink-python/setup.py
+apache-flink
 pandas
 pyarrow
 requests
