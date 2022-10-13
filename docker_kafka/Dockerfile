@@ -7,6 +7,7 @@ LABEL maintainer="haobibo@gmail.com"
 
 COPY work /opt/utils/
 
+ENV KAFKA_HOME=/opt/kafka
 
 RUN source /opt/utils/script-confluent-kafka.sh \
  && echo "Install confluent-kafka:" && setup_confluent_kafka \
