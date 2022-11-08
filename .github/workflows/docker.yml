@@ -19,7 +19,7 @@ env:
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
 jobs:
-  qpod_pyflink:
+  qpod_bigdata:
     name: qpod/bigdata
     runs-on: ubuntu-latest
     steps:
@@ -36,3 +36,12 @@ jobs:
       - run: |
           source ./tool.sh
           build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
+
+  qpod_kafka:
+    name: qpod/kafka
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          source ./tool.sh
+          build_image kafka latest   docker_kafka/Dockerfile && push_image
