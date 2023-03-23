@@ -1,7 +1,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 ARG BASE_NAMESPACE
-ARG BASE_IMG="atom"
+ARG BASE_IMG="base"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"
@@ -20,8 +20,6 @@ RUN source /opt/utils/script-setup.sh \
  && echo "Install mysql client:" && setup_mysql_client \
  && echo "Install mongosh:" && setup_mongosh_client \
  && echo "Install redis-cli:" && setup_redis_client \
- # pyflink does not yet support Python > 3.9
- && echo "Install Mamba, Python 3.9, and Conda:" && setup_mamba && setup_conda_with_mamba "3.9" \
  && echo "Install JDK:" && VERSION_JDK=11 setup_java_base \
  && echo "Install pyflink:" && install_pip /opt/utils/list_install_pip_pyflink.txt \
  && echo "Install pyspark:" && install_pip /opt/utils/list_install_pip_pyspark.txt \
