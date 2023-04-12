@@ -15,6 +15,8 @@ setup_confluent_kafka() {
   mv "${KAFKA_HOME}/docker/kafka/include/etc/confluent/docker/"  "${KAFKA_HOME}/etc/"
   ln -sf ${KAFKA_HOME}/etc /etc/confluent
   ls -alh ${KAFKA_HOME}/*
+
+  echo "Setting up kafka dirs:" && mkdir -pv /var/lib/kafka/data /etc/kafka/secrets
 }
 
 setup_confluent_kafka_kraft() {
