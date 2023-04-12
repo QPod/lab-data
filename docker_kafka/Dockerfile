@@ -12,9 +12,10 @@ COPY work /opt/utils/
 ENV KAFKA_HOME=/opt/kafka \
     KAFKA_VERSION="${KAFKA_VERSION}"
 
-SHELL ["/bin/bash", "-c"]
-
 RUN source /opt/utils/script-confluent-kafka.sh \
  && echo "Install confluent-kafka:" && setup_confluent_kafka \
  && echo "Setup confluent kafka to use KRaft" && setup_confluent_kafka_kraft \
  && echo "Clean up" && list_installed_packages && install__clean
+
+VOLUME ["/var/lib/kafka/data", "/etc/kafka/secrets"]
+CMD ["/etc/confluent/docker/run"]
