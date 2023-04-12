@@ -5,7 +5,7 @@
 [![Join the Gitter Chat](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/QPod/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/qpod/qpod.svg)](https://hub.docker.com/r/qpod/qpod)
 [![Docker Starts](https://img.shields.io/docker/stars/qpod/qpod.svg)](https://hub.docker.com/r/qpod/qpod)
-[![Recent Code Update](https://img.shields.io/github/last-commit/QPod/media-lab.svg)](https://github.com/QPod/data-lab/stargazers)
+[![Recent Code Update](https://img.shields.io/github/last-commit/QPod/data-lab.svg)](https://github.com/QPod/data-lab/stargazers)
 
 Please generously STAR★ our project or donate to us!  [![GitHub Starts](https://img.shields.io/github/stars/QPod/data-lab.svg?label=Stars&style=social)](https://github.com/QPod/data-lab/stargazers)
 [![Donate-PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://paypal.me/haobibo)
@@ -14,7 +14,7 @@ Please generously STAR★ our project or donate to us!  [![GitHub Starts](https:
 
 [Wiki & Document](https://github.com/QPod/docker-images/wiki) | [中文使用指引(含中国地区镜像)](https://github.com/QPod/docker-images/wiki/QPod%E4%B8%AD%E6%96%87%E6%8C%87%E5%BC%95)
 
-## Building blocks for multimedia media projects
+## Building blocks for data lake and pipelines projects
 
 Building blocks for the following big data project use cases are supported in this project:
 - Flink
