@@ -11,14 +11,14 @@ LABEL maintainer="haobibo@gmail.com"
 
 COPY work /opt/utils/
 
-ENV KAFKA_HOME=/opt/kafka \
+ENV COMPONENT=kafka \
     KAFKA_VERSION="${KAFKA_VERSION}" \
-    COMPONENT=kafka
+    KAFKA_HOME=/opt/kafka \
+    PATH=$PATH:$KAFKA_HOME/bin
 
 RUN source /opt/utils/script-confluent-kafka.sh \
  && echo "Install confluent-kafka:" && setup_confluent_kafka \
  && echo "Setup confluent kafka to use KRaft" && setup_confluent_kafka_kraft \
- && pip install -U confluent-kafka \
  && echo "Clean up" && list_installed_packages && install__clean
 
 EXPOSE 9092
