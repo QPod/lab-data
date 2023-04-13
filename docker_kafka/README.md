@@ -19,10 +19,16 @@ export KAFKA_LISTENERS='PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAIN
 export KAFKA_INTER_BROKER_LISTENER_NAME='PLAINTEXT'
 export KAFKA_CONTROLLER_LISTENER_NAMES='CONTROLLER'
 export KAFKA_LOG_DIRS='/tmp/kraft-combined-logs'
+export KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
 
 export COMPONENT=kafka
 export CLUSTER_ID="${CLUSTER_ID:-$(kafka-storage random-uuid)}"
 /etc/confluent/docker/run > /tmp/kafka.log
 ```
 
-ERROR [ClusterLinkMetadataManager-broker-1] Cluster link metadata topic creation failed: org.apache.kafka.common.errors.InvalidReplicationFactorException: Unable to replicate the partition 3 time(s): The target replication factor of 3 cannot be reached because only 1 broker(s) are registered. (kafka.server.linkClusterLinkMetadataManagerWithKRaftSupport)
+## Standalone mode
+If the following error occurs when starting in Kraft mode, try to set this environment variable: `export KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1`:
+
+```log
+ERROR [ClusterLinkMetadataManager-broker-1] Cluster link metadata topic creation failed: org.apache.kafka.common.errors.InvalidReplicationFactorException: Unable to replicate the partition 3 time(s): The target replication factor of 3 cannot be reached because only 1 broker(s) are registered. (kafka.serverlinkClusterLinkMetadataManagerWithKRaftSupport)
+```
