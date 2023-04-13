@@ -27,6 +27,8 @@ export CLUSTER_ID="${CLUSTER_ID:-$(kafka-storage random-uuid)}"
 ```
 
 ## Standalone mode
+Reference: https://github.com/bitnami/containers/tree/main/bitnami/kafka#kafka-without-zookeeper-kraft
+
 If the following error occurs when starting in Kraft mode, try to set this environment variable: `export KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1`:
 
 ```log
