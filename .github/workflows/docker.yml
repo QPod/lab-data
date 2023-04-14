@@ -37,11 +37,11 @@ jobs:
           source ./tool.sh
           build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
 
-  qpod_kafka:
-    name: qpod/kafka
+  qpod_kafka_confluent:
+    name: qpod/kafka_confluent
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: |
           source ./tool.sh
-          build_image kafka latest   docker_kafka/Dockerfile && push_image
+          build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
