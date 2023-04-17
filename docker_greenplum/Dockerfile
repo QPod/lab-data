@@ -18,7 +18,6 @@ RUN source /opt/utils/script-utils.sh \
  && usermod -aG root ${GPDB_USER} \
  && echo "${GPDB_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
  && mkdir -p /home/${GPDB_USER}/.ssh \
- && cp /root/.bashrc /home/${GPDB_USER}/ \
  && chown -R ${GPDB_USER}:${GPDB_USER} /home/${GPDB_USER} \
  && echo "${GPDB_USER}:${GPDB_USER}" | chpasswd
 
