@@ -45,3 +45,12 @@ jobs:
       - run: |
           source ./tool.sh
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
+
+  qpod_greenplum:
+    name: qpod/greenplum
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          source ./tool.sh
+          build_image greenplum latest      docker_greenplum/Dockerfile && push_image
