@@ -8,4 +8,3 @@ krb5-kdc krb5-admin-server libkrb5-dev
 libapr1-dev libbz2-dev libcurl4-gnutls-dev libevent-dev
 libpam-dev libperl-dev libreadline-dev libssl-dev libxerces-c-dev libxml2-dev libyaml-dev libzstd-dev zlib1g-dev
 openssh-client openssh-server openssl
-# python3-dev python3-pip python3-psutil python3-pygresql python3-yaml
