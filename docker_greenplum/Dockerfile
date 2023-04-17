@@ -12,7 +12,7 @@ ENV GPDB_HOME="/opt/gpdb" \
     GPDB_USER="gpadmin"
 
 RUN source /opt/utils/script-utils.sh \
- && install_apt /opt/work/install_list_greenplum.apt \
+ && install_apt /opt/utils/install_list_greenplum.apt \
  && GPDB_USER=gpadmin \
  && useradd ${GPDB_USER} \
  && usermod -aG root ${GPDB_USER} \
