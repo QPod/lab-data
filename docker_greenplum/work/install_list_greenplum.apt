@@ -1,0 +1,11 @@
+% This file contains apt packages to be installed with apt-get install line by line.
+% Use percent char as line comment separator.
+
+gcc g++ bison flex cmake pkg-config \
+ccache ninja-build \
+locales  curl net-tools inetutils-ping git-core \
+krb5-kdc krb5-admin-server libkrb5-dev \
+libapr1-dev libbz2-dev libcurl4-gnutls-dev libevent-dev \
+libpam-dev libperl-dev libreadline-dev libssl-dev libxerces-c-dev libxml2-dev libyaml-dev libzstd-dev   zlib1g-dev \
+openssh-client openssh-server openssl
+# python3-dev python3-pip python3-psutil python3-pygresql python3-yaml
