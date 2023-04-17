@@ -14,7 +14,7 @@ GPDB集群为主从模式，主结点称为master结点或者coordinator结点�
 USERNAME=gpadmin \
 && sudo useradd ${USERNAME} \
 && sudo usermod -aG root ${USERNAME} \
-&& sudo echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+&& sudo echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
 && sudo mkdir -p /home/${USERNAME}/.ssh \
 && sudo cp /root/.bashrc /home/${USERNAME}/ \
 && sudo chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
@@ -101,7 +101,7 @@ sudo chown -R gpadmin:gpadmin /opt/gpdb
 在gpadmin用户下，执行下面的命令，使gpadmin登录后能默认找到GBDP各组件，如gpssh、gpscp等。
 
 ```shell
-echo "source /opt/gpdb/greenplum_paths.sh" >> ~/.bashrc
+echo "source /opt/gpdb/greenplum_path.sh" >> ~/.bashrc
 ```
 
 ### 2.4 将GDPB自带的python模块软链接到Python的包目录
@@ -109,7 +109,8 @@ echo "source /opt/gpdb/greenplum_paths.sh" >> ~/.bashrc
 GPDB自带了一个名为`gppylib`的Python包，用来管理和控制GPDB。通过下面的步骤，使默认的Python能够找到该包。
 
 ```shell
-sudo ln -s /opt/gpdb/lib/python/* /opt/conda/lib/python3.8/site-packages/
+PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
+ && sudo ln -s /opt/gpdb/lib/python/* ${PYTHON_SITE}/
 ```
 
 ### 2.5. 配置服务器列表文件
@@ -209,9 +210,10 @@ vm.dirty_bytes = 4294967296
 初始化的文件模板可以通过GPDB自带的文件，基于此进行修改：
 
 ```shell
+mkdir -pv /opt/gpdb/conf
 cp /opt/gpdb/docs/cli_help/gpconfigs/gpinitsystem_config /opt/gpdb/conf/gpinitsystem_config
-mkdir -p /data/gpdb/coordinator
-mkdir -p /data/gpdb/primary1 /data/gpdb/primary2 /data/gpdb/mirror1 /data/gpdb/mirror2
+mkdir -pv /data/gpdb/coordinator
+mkdir -pv /data/gpdb/primary1 /data/gpdb/primary2 /data/gpdb/mirror1 /data/gpdb/mirror2
 ```
 
 注意，在下面配置文件中的目录，各个目录名都需要预先创建好。
@@ -228,12 +230,12 @@ SEG_PREFIX="gpseg"
 MACHINE_LIST_FILE="/opt/gpdb/conf/seg_host"
 
 # Master结点主机名
-COORDINATOR_HOSTNAME=KGDB-001
+COORDINATOR_HOSTNAME=GP7-001
 
 #master的数据目录
 COORDINATOR_DIRECTORY=/data/gpdb/coordinator
 
-#指定primary segment的数据目录,网上写的是多个相同目录，多个目录表示一台机器有多个segment
+#指定primary segment的数据目录，网上写的是多个相同目录，多个目录表示一台机器有多个segment
 declare -a DATA_DIRECTORY=(/data/gpdb/primary1 /data/gpdb/primary1 /data/gpdb/primary1 /data/gpdb/primary2 /data/gpdb/primary2 /data/gpdb/primary2)
 
 # mirror的数据目录，和主数据一样，一个对一个，多个对多个
