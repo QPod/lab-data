@@ -25,12 +25,12 @@ RUN source /opt/utils/script-utils.sh \
  && PYTHON=/opt/conda/bin/python3 ./configure --prefix=/opt/gpdb --with-perl --with-python --with-libxml --with-gssapi --with-openssl \
  && sudo make -j16 && sudo make install -j16 \
  && sudo chown -R ${GPDB_USER}:${GPDB_USER} /opt/gpdb \
- && cp -rf /opt/utils/etc / && rm -rf /opt/utils/etc /opt/gpdb_src \
  && mkdir -pv /opt/gpdb/conf /data/gpdb \
  && cp /opt/gpdb/docs/cli_help/gpconfigs/gpinitsystem_config /opt/gpdb/conf/gpinitsystem_config \
  && PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
  && sudo ln -s /opt/gpdb/lib/python/* ${PYTHON_SITE}/ \
  && pip install conan psutil pygresql \
+ && cp -rf /opt/utils/etc / && rm -rf /opt/utils/etc /opt/gpdb_src \
  && echo "source /opt/gpdb/greenplum_path.sh" >> /etc/profile \
  && echo "Clean up" && list_installed_packages && install__clean
 
