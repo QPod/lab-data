@@ -19,10 +19,8 @@ RUN source /opt/utils/script-utils.sh \
  && echo "${GPDB_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
  && mkdir -p /home/${GPDB_USER}/.ssh \
  && chown -R ${GPDB_USER}:${GPDB_USER} /home/${GPDB_USER} \
- && echo "${GPDB_USER}:${GPDB_USER}" | chpasswd
-
-
-RUN install_tar_gz https://github.com/greenplum-db/gpdb/releases/download/7.0.0-beta.2/7.0.0-beta.2-src-full.tar.gz \
+ && echo "${GPDB_USER}:${GPDB_USER}" | chpasswd \
+ && install_tar_gz https://github.com/greenplum-db/gpdb/releases/download/7.0.0-beta.2/7.0.0-beta.2-src-full.tar.gz \
  && cd /opt/gpdb_src \
  && pip install conan psutil \
  && export PATH="${PATH}":${GPDB_HOME}/bin \
