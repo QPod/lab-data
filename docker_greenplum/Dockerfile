@@ -18,6 +18,7 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 LABEL maintainer="haobibo@gmail.com"
 
 COPY rootfs /
+COPY --from=builder /opt/utils/install_list_greenplum.apt /opt/utils/
 COPY --from=builder --chown=1000:1000 /opt/gpdb /opt/gpdb
 
 ENV GPHOME="/opt/gpdb" \
