@@ -28,7 +28,6 @@ ENV GPDB_HOME="/opt/gpdb" \
     PGDATABASE=postgres
 
 RUN source /opt/utils/script-utils.sh \
- && ls -alh /etc/security/* ${GPDB_HOME}/* \
  && echo "source ${GPDB_HOME}/greenplum_path.sh" >> /etc/profile \
  && useradd -u 1000 ${GPDB_USER} -s /bin/bash -d /home/${GPDB_USER} \
  && usermod -aG root ${GPDB_USER} \
@@ -53,7 +52,7 @@ USER ${GPDB_USER}
 WORKDIR /home/${GPDB_USER}
 
 RUN ulimit -n 65536 65536 \
- && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C `GreenplumDB` -f ~/.ssh/id_rsa \
+ && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
  && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
  && chmod 600 ~/.ssh/authorized_keys
 
