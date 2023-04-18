@@ -4,5 +4,7 @@
 locales curl net-tools inetutils-ping git-core
 krb5-kdc krb5-admin-server libkrb5-dev
 libapr1-dev libbz2-dev libcurl4-gnutls-dev libevent-dev
-libpam-dev libperl-dev libreadline-dev libssl-dev libxerces-c-dev libxml2-dev libyaml-dev libzstd-dev zlib1g-dev
+libpam-dev libperl-dev libreadline-dev libssl-dev libxerces-c-dev libxerces-c3.2 libxml2-dev libyaml-dev libzstd-dev zlib1g-dev
 openssh-client openssh-server openssl
+iproute2
+% package iproute2 provides command ip and ss
