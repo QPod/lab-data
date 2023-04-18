@@ -27,9 +27,9 @@ ENV GPDB_HOME="/opt/gpdb" \
     PGUSER=gpadmin \
     PGDATABASE=postgres
 
-RUN ulimit -n 65536 65536 \
+RUN source /opt/utils/script-utils.sh \
+ && ls -alh ${GPDB_HOME}/* \
  && echo "source ${GPDB_HOME}/greenplum_path.sh" >> /etc/profile \
- && source /opt/utils/script-utils.sh \
  && useradd -u 1000 ${GPDB_USER} -s /bin/bash -d /home/${GPDB_USER} \
  && usermod -aG root ${GPDB_USER} \
  && echo "${GPDB_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
@@ -37,10 +37,10 @@ RUN ulimit -n 65536 65536 \
  && mkdir -pv ${GPDB_HOME}/conf ${GPDB_DATA} /home/${GPDB_USER}/.ssh \
  && chown -R ${GPDB_USER}:${GPDB_USER} ${GPDB_HOME} ${GPDB_DATA} /home/${GPDB_USER} \
  && install_apt /opt/utils/install_list_greenplum.apt \
- && export PATH="${PATH}":${GPDB_HOME}/bin \
+ && export PATH="${PATH}:${GPDB_HOME}/bin" && cd ${GPDB_HOME}/bin && ls -alh \
  && PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
  && sudo ln -s ${GPDB_HOME}/lib/python/* ${PYTHON_SITE}/ \
- && pip install conan psutil pygresql \
+ && pip install -U psutil pygresql pyyaml \
  && cp ${GPDB_HOME}/docs/cli_help/gpconfigs/gpinitsystem_config ${GPDB_HOME}/conf/gpinitsystem_config \
  # config sshd
  && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
@@ -50,13 +50,13 @@ RUN ulimit -n 65536 65536 \
 
 ENV PATH="$PATH:${GPDB_HOME}/bin"
 USER ${GPDB_USER}
-WORKDIR /home/${GPDB_USER}}
+WORKDIR /home/${GPDB_USER}
 
-RUN echo \
- && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C `GreenPlumDB` -f ~/.ssh/id_rsa \
+RUN ulimit -n 65536 65536 \
+ && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C `GreenplumDB` -f ~/.ssh/id_rsa \
  && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
  && chmod 600 ~/.ssh/authorized_keys
 
 EXPOSE 5432 22
 VOLUME ["${GPDB_DATA}", "${GPDB_HOME}/conf"]
-
+CMD  [ "bash" , "/opt/gpdb/entrypoint.sh"]
