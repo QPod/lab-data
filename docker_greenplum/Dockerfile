@@ -61,4 +61,4 @@ ENV PATH="$PATH:${GPHOME}/bin" \
 WORKDIR /home/${GPUSER}
 EXPOSE 5432 22
 VOLUME ["${GPDATA}", "${GPHOME}/conf"]
-CMD ["bash", "/opt/gpdb/entrypoint.sh"]
+CMD ["/usr/sbin/sshd", "-D"]
