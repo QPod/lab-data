@@ -48,16 +48,16 @@ RUN source /opt/utils/script-utils.sh \
  && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
  && echo "Clean up" && list_installed_packages && install__clean \
  && ulimit -n 65536 65536 \
- && su ${GPUSER} \
- && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
- && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
- && chmod 600 ~/.ssh/authorized_keys \
  && ssh-keygen -A -v && mkdir -pv /run/sshd
 
+USER ${GPUSER}
+RUN [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
+ && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+ && chmod 600 ~/.ssh/authorized_keys
+ 
 ENV PATH="$PATH:${GPHOME}/bin" \
     LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GPHOME}/lib"
 
-USER ${GPUSER}
 WORKDIR /home/${GPUSER}
 EXPOSE 5432 22
 VOLUME ["${GPDATA}", "${GPHOME}/conf"]
