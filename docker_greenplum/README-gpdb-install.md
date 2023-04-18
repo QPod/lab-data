@@ -2,7 +2,7 @@
 
 本文档介绍GPDB的安装，以目前Github上开源的最新版本为例。
 
-GPDB集群为主从模式，主结点称为master结点或者coordinator结点，从结点成为segment结点。
+GPDB集群为主从模式，主结点称为master结点或者coordinator结点，从结点称为segment结点。
 
 ## 准备工作（均为必须）
 
@@ -32,7 +32,7 @@ ssh-keygen -t rsa -b 4096 -N "" -C `hostname` -f ~/.ssh/id_rsa
 
 在主节点上，也即第1台服务器上，授权通过ssh访问各台服务器：
 建议先安装sshpass: apt-get install sshpass，然后再从第1台服务器上执行下面的命令（最后一个参数为主机名）
-```sshpass -p "P@ssw0rd!" ssh-copy-id -o StrictHostKeyChecking=no gpadmin@KGDB-001```
+```sshpass -p "P@ssw0rd!" ssh-copy-id -o StrictHostKeyChecking=no gpadmin@GPDB-001```
 
 ### 1.3 安装依赖
 
@@ -58,16 +58,16 @@ sudo pip3 install conan
 
 ```txt
 # IP Address    Node Name
-30.23.109.100   KGDB-001
-30.23.109.107   KGDB-002
-30.23.109.109   KGDB-003
+30.23.109.100   GPDB-001
+30.23.109.101   GPDB-002
+30.23.109.102   GPDB-003
 ```
 
 ## 2 编译安装GPDB
 
 在第一台服务器上，以gpadmin用户，从gpdb的源代码编译安装GPDB到/opt/gpdb/
 本例中，下载的源代码来自于gpdb官方代码库的master branch: https://github.com/greenplum-db/gpdb.git
-master branch编译出的版本为基于PostgreSQL 12.0的版本，且该版本可以只使用Python3。
+master branch编译出的版本为基于PostgreSQL 12.x的版本，且该版本可以只使用Python3。
 
 ### 2.1 准备Python依赖
 
@@ -121,15 +121,15 @@ PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sy
 
 ```txt
 # hostlist
-KGDB-001
-KGDB-002
-KDGB-003
+GPDB-001
+GPDB-002
+GPDB-003
 ```
 
 ```txt
 # seg_host
-KDGB-002
-KGDB-003
+GPDB-002
+GPDB-003
 ```
 
 ### 2.6 授权服务器之间SSH互访
@@ -149,7 +149,7 @@ gpscp -f seg_host /opt/conda /opt/gpdb =:~/
 例如通过下面的echo命令来追加到/etc/hosts文件（参照步骤1.4）：
 
 ```shell
-sudo echo "30.23.109.100  KGDB-001" >> /etc/hosts
+sudo echo "30.23.109.100  GPDB-001" >> /etc/hosts
 ```
 
 ### 2.8. 修改Linux系统配置
@@ -223,14 +223,14 @@ mkdir -pv /data/gpdb/primary1 /data/gpdb/primary2 /data/gpdb/mirror1 /data/gpdb/
 
 ```conf
 #集群名称
-ARRAY_NAME="KGDB"
+ARRAY_NAME="GPDB"
 
 SEG_PREFIX="gpseg"
 
 MACHINE_LIST_FILE="/opt/gpdb/conf/seg_host"
 
 # Master结点主机名
-COORDINATOR_HOSTNAME=GP7-001
+COORDINATOR_HOSTNAME=GPDB-001
 
 #master的数据目录
 COORDINATOR_DIRECTORY=/data/gpdb/coordinator

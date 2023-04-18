@@ -22,7 +22,10 @@ COPY --from=builder --chown=1000:1000 /opt/gpdb /opt/
 
 ENV GPDB_HOME="/opt/gpdb" \
     GPDB_DATA="/data/gpdb" \
-    GPDB_USER="gpadmin"
+    GPDB_USER="gpadmin" \
+    PGPORT=5432 \
+    PGUSER=gpadmin \
+    PGDATABASE=postgres
 
 RUN ulimit -n 65536 65536 \
  && echo "source ${GPDB_HOME}/greenplum_path.sh" >> /etc/profile \
@@ -39,10 +42,21 @@ RUN ulimit -n 65536 65536 \
  && sudo ln -s ${GPDB_HOME}/lib/python/* ${PYTHON_SITE}/ \
  && pip install conan psutil pygresql \
  && cp ${GPDB_HOME}/docs/cli_help/gpconfigs/gpinitsystem_config ${GPDB_HOME}/conf/gpinitsystem_config \
+ # config sshd
+ && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+ && sed -i -r 's/^.*StrictHostKeyChecking\s+\w+/StrictHostKeyChecking no/' /etc/ssh/ssh_config \
+ && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
  && echo "Clean up" && list_installed_packages && install__clean
 
 ENV PATH="$PATH:${GPDB_HOME}/bin"
 USER ${GPDB_USER}
 WORKDIR /home/${GPDB_USER}}
+
+RUN echo \
+ && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C `GreenPlumDB` -f ~/.ssh/id_rsa \
+ && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+ && chmod 600 ~/.ssh/authorized_keys
+
 EXPOSE 5432 22
-VOLUME ["${GPDB_DATA}}"]
+VOLUME ["${GPDB_DATA}", "${GPDB_HOME}/conf"]
+
