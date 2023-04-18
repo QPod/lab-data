@@ -18,7 +18,7 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 LABEL maintainer="haobibo@gmail.com"
 
 COPY rootfs /
-COPY --from=builder --chown=1000:1000 /opt/gpdb /opt/
+COPY --from=builder --chown=1000:1000 /opt/gpdb /opt/gpdb
 
 ENV GPDB_HOME="/opt/gpdb" \
     GPDB_DATA="/data/gpdb" \
@@ -28,7 +28,7 @@ ENV GPDB_HOME="/opt/gpdb" \
     PGDATABASE=postgres
 
 RUN source /opt/utils/script-utils.sh \
- && ls -alh ${GPDB_HOME}/* \
+ && ls -alh /etc/security/* ${GPDB_HOME}/* \
  && echo "source ${GPDB_HOME}/greenplum_path.sh" >> /etc/profile \
  && useradd -u 1000 ${GPDB_USER} -s /bin/bash -d /home/${GPDB_USER} \
  && usermod -aG root ${GPDB_USER} \
