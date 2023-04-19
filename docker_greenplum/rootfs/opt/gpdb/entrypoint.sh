@@ -11,14 +11,14 @@ function gp_init() {
     echo 'host  all  all  0.0.0.0/0  password' >>"${MASTER_DATA_DIRECTORY}/pg_hba.conf" &&
     gpconfig -c log_statement -v none &&
     gpconfig -c gp_enable_global_deadlock_detector -v on
-
-  sleep 5s
 }
 
-sudo /usr/sbin/sshd -D && sleep 5s
+sudo service ssh start && sleep 3s
 
 if [ "$(ls -A ${GPDATA})" = "" ]; then
-  gp_init && gpstop -u && tail -f gpAdminLogs/*.log
+  echo "Init GPDB" && gp_init &&
+    echo "Update GPDB config" && gpstop -u &&
 else
-  gpstart -a && tail -f gpAdminLogs/*.log
+  echo "Starting GPDB" && gpstart -a &&
 fi
+tail -f gpAdminLogs/*.log
