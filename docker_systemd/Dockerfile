@@ -7,6 +7,9 @@ COPY rootfs /
 
 RUN source /opt/utils/script-utils.sh \
  && install_apt /opt/utils/install_list_systemd.apt \
+ && rm -f /lib/systemd/system/systemd*udev* \
+ && rm -f /lib/systemd/system/getty.target \
+ && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
  && chmod +x /*.sh \
  && echo "Clean up" && list_installed_packages && install__clean
 
