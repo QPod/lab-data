@@ -17,8 +17,8 @@ sudo service ssh start && sleep 3s
 
 if [ "$(ls -A ${GPDATA})" = "" ]; then
   echo "Init GPDB" && gp_init &&
-    echo "Update GPDB config" && gpstop -u &&
+    echo "Update GPDB config" && gpstop -u
 else
-  echo "Starting GPDB" && gpstart -a &&
+  echo "Starting GPDB" && gpstart -a
 fi
 tail -f gpAdminLogs/*.log
