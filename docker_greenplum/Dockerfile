@@ -65,4 +65,5 @@ ENV PATH="$PATH:${GPHOME}/bin" \
 WORKDIR /home/${GPUSER}
 EXPOSE 5432 22
 VOLUME ["${GPDATA}", "${GPHOME}/conf"]
+ENTRYPOINT ["tini", "-g", "--"]
 CMD ["/bin/bash", "-c", "${GPHOME}/entrypoint.sh"]
