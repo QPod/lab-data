@@ -49,7 +49,7 @@ RUN source /opt/utils/script-utils.sh \
 USER ${GPUSER}
 RUN [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
  && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
- && ssh-keygen -A -v &&
+ && ssh-keygen -A -v \
  && chmod 600 ~/.ssh/authorized_keys
  
 ENV PATH="$PATH:${GPHOME}/bin" \
