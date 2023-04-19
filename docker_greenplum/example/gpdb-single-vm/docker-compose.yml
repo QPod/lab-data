@@ -23,6 +23,9 @@ services:
     volumes:
     - ./conf:/opt/gpdb/conf
     - /data/database/greenplum:/data/gpdb
+    depends_on:
+      - sdw1
+      - sdw2
 
   sdw1:
     image: "docker.io/qpod/greenplum"
