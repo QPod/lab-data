@@ -1,0 +1,45 @@
+version: "3"
+
+networks:
+  greenplum:
+    ipam:
+      config:
+      - subnet: 10.188.0.0/24
+        gateway: 10.188.0.1
+
+services:
+  cdw:
+    image: "docker.io/qpod/greenplum"
+    container_name: gpdb-cdw
+    hostname: gpdb-cdw
+    ports:
+      - "10022:22"
+      - "15432:5432"
+    tty: true
+    networks:
+      - greenplum
+    volumes:
+    - ./conf:/opt/gpdb/conf
+    - /data/database/gpdb:/data/gpdb
+
+  sdw1:
+    image: "docker.io/qpod/greenplum"
+    container_name: gpdb-sdw1
+    hostname: gpdb-sdw1
+    tty: true
+    networks:
+      - greenplum
+    volumes:
+    - ./conf:/opt/gpdb/conf
+    - /data/database/gpdb:/data/gpdb
+
+  sdw2:
+    image: "docker.io/qpod/greenplum"
+    container_name: gpdb-sdw2
+    hostname: gpdb-sdw2
+    tty: true
+    networks:
+      - greenplum
+    volumes:
+      - ./conf:/opt/gpdb/conf
+      - /data/database/gpdb:/data/gpdb

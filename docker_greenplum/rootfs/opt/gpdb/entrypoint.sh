@@ -1,6 +1,8 @@
 #!/bin/bash
 
 function gp_init() {
+  sudo chmod -R ug+rw ${GPDATA}
+
   local GP_CONFIG_FILE_INIT="/opt/gpdb/conf/gpinitsystem.conf"
 
   export DATA_DIRECTORY="${GPDATA}/primary" &&
@@ -8,7 +10,7 @@ function gp_init() {
     echo "Begin to init Greenplum using config file: ${GP_CONFIG_FILE_INIT}" &&
     gpinitsystem -a -c ${GP_CONFIG_FILE_INIT} &&
     echo "GreenplumDB has been successfully init and now started!" &&
-    echo 'host  all  all  0.0.0.0/0  password' >>"${MASTER_DATA_DIRECTORY}/pg_hba.conf" &&
+    echo 'host  all  all  0.0.0.0/0  password' >>"${COORDINATOR_DATA_DIRECTORY}/pg_hba.conf" &&
     gpconfig -c log_statement -v none &&
     gpconfig -c gp_enable_global_deadlock_detector -v on
 }
@@ -19,6 +21,6 @@ if [ "$(ls -A ${GPDATA})" = "" ]; then
   echo "Init GPDB" && gp_init &&
     echo "Update GPDB config" && gpstop -u
 else
-  echo "Starting GPDB" && gpstart -a
+  echo "Starting existing GPDB" && gpstart -a
 fi
-tail -f gpAdminLogs/*.log
+# tail -f gpAdminLogs/*.log

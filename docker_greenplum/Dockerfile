@@ -50,7 +50,8 @@ USER ${GPUSER}
 RUN [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
  && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
  && ssh-keygen -A -v \
- && chmod 600 ~/.ssh/authorized_keys
+ && chmod 600 ~/.ssh/authorized_keys \
+ && chmod +x ${GPHOME}/*.sh
  
 ENV PATH="$PATH:${GPHOME}/bin" \
     USER=${GPUSER} \
@@ -64,4 +65,4 @@ ENV PATH="$PATH:${GPHOME}/bin" \
 WORKDIR /home/${GPUSER}
 EXPOSE 5432 22
 VOLUME ["${GPDATA}", "${GPHOME}/conf"]
-CMD ["bash", "${GPHOME}/entrypoint.sh"]
+CMD ["/bin/bash -c ${GPHOME}/entrypoint.sh"]
