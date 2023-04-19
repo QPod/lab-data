@@ -28,3 +28,4 @@ else
   echo "Starting existing GPDB" && gpstart -a
 fi
 # tail -f gpAdminLogs/*.log
+bash
