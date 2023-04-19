@@ -1,7 +1,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 ARG BASE_NAMESPACE
-ARG BASE_IMG="base"
+ARG BASE_IMG="jdk11"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"
@@ -20,7 +20,6 @@ RUN source /opt/utils/script-setup.sh \
  && echo "Install mysql client:" && setup_mysql_client \
  && echo "Install mongosh:" && setup_mongosh_client \
  && echo "Install redis-cli:" && setup_redis_client \
- && echo "Install JDK:" && VERSION_JDK=11 setup_java_base \
  && echo "Install pyflink:" && install_pip /opt/utils/list_install_pip_pyflink.txt \
  && echo "Install pyspark:" && install_pip /opt/utils/list_install_pip_pyspark.txt \
  && echo "Clean up" && list_installed_packages && install__clean

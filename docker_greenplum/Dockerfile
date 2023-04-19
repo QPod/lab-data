@@ -1,39 +1,69 @@
 # Distributed under the terms of the Modified BSD License.
 ARG BASE_NAMESPACE
 ARG BASE_IMG="base"
+FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} AS builder
+
+COPY rootfs /
+
+RUN source /opt/utils/script-utils.sh \
+ && install_apt /opt/utils/install_list_greenplum.apt \
+ && apt-get -qq install -yq --no-install-recommends  gcc g++ bison flex cmake pkg-config ccache ninja-build \
+ && install_tar_gz https://github.com/greenplum-db/gpdb/releases/download/7.0.0-beta.2/7.0.0-beta.2-src-full.tar.gz \
+ && cd /opt/gpdb_src \
+ && PYTHON=/opt/conda/bin/python3 ./configure --prefix=/opt/gpdb --with-perl --with-python --with-libxml --with-gssapi --with-openssl \
+ && sudo make -j16 && sudo make install -j16
+ 
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"
 
-COPY work /opt/utils/
+COPY rootfs /
+COPY --from=builder --chown=1000:1000 /opt/gpdb /opt/gpdb
 
-ENV GPDB_HOME="/opt/gpdb" \
-    GPDB_DATA="/data/gpdb" \
-    GPDB_USER="gpadmin"
+ENV GPHOME="/opt/gpdb" \
+    GPDATA="/data/gpdb" \
+    GPUSER="gpadmin"
 
 RUN source /opt/utils/script-utils.sh \
+ && echo "source ${GPHOME}/greenplum_path.sh" >> /etc/profile \
+ && useradd -u 1000 ${GPUSER} -s /bin/bash -d /home/${GPUSER} \
+ && usermod -aG root ${GPUSER} \
+ && echo "${GPUSER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && echo "${GPUSER}:${GPUSER}" | chpasswd \
+ && mkdir -pv ${GPHOME}/conf ${GPDATA} /home/${GPUSER}/.ssh \
+ && chown -R ${GPUSER}:${GPUSER} ${GPHOME} ${GPDATA} /home/${GPUSER} \
  && install_apt /opt/utils/install_list_greenplum.apt \
- && useradd ${GPDB_USER} \
- && usermod -aG root ${GPDB_USER} \
- && echo "${GPDB_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
- && mkdir -p /home/${GPDB_USER}/.ssh \
- && chown -R ${GPDB_USER}:${GPDB_USER} /home/${GPDB_USER} \
- && echo "${GPDB_USER}:${GPDB_USER}" | chpasswd \
- && install_tar_gz https://github.com/greenplum-db/gpdb/releases/download/7.0.0-beta.2/7.0.0-beta.2-src-full.tar.gz \
- && cd /opt/gpdb_src \
- && export PATH="${PATH}":${GPDB_HOME}/bin \
- && PYTHON=/opt/conda/bin/python3 ./configure --prefix=${GPDB_HOME} --with-perl --with-python --with-libxml --with-gssapi --with-openssl \
- && sudo make -j16 && sudo make install -j16 \
- && mkdir -pv ${GPDB_HOME}/conf ${GPDB_DATA} \
- && sudo chown -R ${GPDB_USER}:${GPDB_USER} ${GPDB_HOME} ${GPDB_DATA} \
- && cp ${GPDB_HOME}/docs/cli_help/gpconfigs/gpinitsystem_config ${GPDB_HOME}/conf/gpinitsystem_config \
+ && export PATH="${PATH}:${GPHOME}/bin" && cd ${GPHOME}/bin && ls -alh \
  && PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
- && sudo ln -s ${GPDB_HOME}/lib/python/* ${PYTHON_SITE}/ \
- && pip install conan psutil pygresql \
- && cp -rf /opt/utils/etc / && rm -rf /opt/utils/etc /opt/gpdb_src \
- && echo "source ${GPDB_HOME}/greenplum_path.sh" >> /etc/profile \
+ && sudo ln -s ${GPHOME}/lib/python/* ${PYTHON_SITE}/ \
+ && pip install -U psutil pygresql pyyaml \
+ && cp ${GPHOME}/docs/cli_help/gpconfigs/gpinitsystem_config ${GPHOME}/conf/gpinitsystem_config \
+ # config sshd
+ && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+ && sed -i -r 's/^.*StrictHostKeyChecking\s+\w+/StrictHostKeyChecking no/' /etc/ssh/ssh_config \
+ && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+ && mkdir -pv /run/sshd \
+ && ulimit -n 65536 65536 \
  && echo "Clean up" && list_installed_packages && install__clean
 
-USER ${GPDB_USER}
+USER ${GPUSER}
+RUN [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
+ && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+ && ssh-keygen -A -v \
+ && chmod 600 ~/.ssh/authorized_keys \
+ && chmod +x ${GPHOME}/*.sh
+ 
+ENV PATH="$PATH:${GPHOME}/bin" \
+    USER=${GPUSER} \
+    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GPHOME}/lib" \
+    COORDINATOR_DIRECTORY="${GPDATA}/coordinator" \
+    COORDINATOR_DATA_DIRECTORY="${GPDATA}/coordinator/gpseg-1" \
+    PGPORT=5432 \
+    PGUSER=gpadmin \
+    PGDATABASE=postgres
+
+WORKDIR /home/${GPUSER}
 EXPOSE 5432 22
-VOLUME ["${GPDB_HOME}"]
+VOLUME ["${GPDATA}", "${GPHOME}/conf"]
+ENTRYPOINT ["tini", "-g", "--"]
+CMD ["/bin/bash", "-c", "${GPHOME}/entrypoint.sh"]

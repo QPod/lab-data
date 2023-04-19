@@ -21,3 +21,4 @@ Building blocks for the following big data project use cases are supported in th
 - Spark
 - Kafka
 - Elasticsearch
+- GreenplumDB
