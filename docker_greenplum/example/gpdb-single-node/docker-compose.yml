@@ -20,4 +20,3 @@ services:
       - greenplum
     volumes:
     - /data/database/gpdb:/data/gpdb
-    command: bash

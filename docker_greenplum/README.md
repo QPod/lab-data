@@ -15,4 +15,6 @@ docker run -d \
   -h gpdb-cdw \
   --name gpdb-cdw \
   docker.io/qpod0dev/greenplum
+
+/bin/bash -c ${GPHOME}/entrypoint.sh
 ```

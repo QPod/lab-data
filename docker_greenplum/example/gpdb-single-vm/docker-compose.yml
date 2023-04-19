@@ -4,8 +4,8 @@ networks:
   greenplum:
     ipam:
       config:
-      - subnet: 10.188.0.0/24
-        gateway: 10.188.0.1
+      - subnet: 10.189.0.0/24
+        gateway: 10.189.0.1
 
 services:
   cdw:
@@ -18,9 +18,11 @@ services:
     tty: true
     networks:
       - greenplum
+    environment:
+      - ROLE="COORDINATOR"
     volumes:
     - ./conf:/opt/gpdb/conf
-    - /data/database/gpdb:/data/gpdb
+    - /data/database/greenplum:/data/gpdb
 
   sdw1:
     image: "docker.io/qpod/greenplum"
@@ -29,9 +31,11 @@ services:
     tty: true
     networks:
       - greenplum
+    environment:
+      - ROLE="SEGMENT"
     volumes:
     - ./conf:/opt/gpdb/conf
-    - /data/database/gpdb:/data/gpdb
+    - /data/database/greenplum:/data/gpdb
 
   sdw2:
     image: "docker.io/qpod/greenplum"
@@ -40,6 +44,8 @@ services:
     tty: true
     networks:
       - greenplum
+    environment:
+      - ROLE="SEGMENT"
     volumes:
       - ./conf:/opt/gpdb/conf
-      - /data/database/gpdb:/data/gpdb
+      - /data/database/greenplum:/data/gpdb
