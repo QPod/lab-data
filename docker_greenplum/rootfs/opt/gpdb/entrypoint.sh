@@ -1,18 +1,16 @@
 #!/bin/bash
 
 function gp_init() {
-  export COORDINATOR_DIRECTORY="${GPDATA}/coordinator"
-  export DATA_DIRECTORY="${GPDATA}/primary"
-  mkdir -pv "${COORDINATOR_DIRECTORY}" "${DATA_DIRECTORY}"
+  local GP_CONFIG_FILE_INIT="/opt/gpdb/conf/gpinitsystem.conf"
 
-  gpinitsystem -a -c /opt/gpdb/conf/gpinitsystem.conf \
-  && echo "GPDB has successfully init and now started!"
-
-  export USER=$(whoami) \
-  && export COORDINATOR_DATA_DIRECTORY="${COORDINATOR_DIRECTORY}/gpseg-1" \
-  && echo 'host  all  all  0.0.0.0/0  password' >> "${COORDINATOR_DATA_DIRECTORY}/pg_hba.conf" \
-  && gpconfig -c log_statement -v none \
-  && gpconfig -c gp_enable_global_deadlock_detector -v on
+  export DATA_DIRECTORY="${GPDATA}/primary" &&
+    mkdir -pv "${COORDINATOR_DIRECTORY}" "${DATA_DIRECTORY}" &&
+    echo "Begin to init Greenplum using config file: ${GP_CONFIG_FILE_INIT}" &&
+    gpinitsystem -a -c ${GP_CONFIG_FILE_INIT} &&
+    echo "GreenplumDB has been successfully init and now started!" &&
+    echo 'host  all  all  0.0.0.0/0  password' >>"${MASTER_DATA_DIRECTORY}/pg_hba.conf" &&
+    gpconfig -c log_statement -v none &&
+    gpconfig -c gp_enable_global_deadlock_detector -v on
 
   sleep 5s
 }

@@ -3,7 +3,7 @@ ARG BASE_NAMESPACE
 ARG BASE_IMG="base"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} AS builder
 
-COPY work /opt/utils/
+COPY rootfs /
 
 RUN source /opt/utils/script-utils.sh \
  && install_apt /opt/utils/install_list_greenplum.apt \
@@ -18,15 +18,11 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 LABEL maintainer="haobibo@gmail.com"
 
 COPY rootfs /
-COPY --from=builder /opt/utils/install_list_greenplum.apt /opt/utils/
 COPY --from=builder --chown=1000:1000 /opt/gpdb /opt/gpdb
 
 ENV GPHOME="/opt/gpdb" \
     GPDATA="/data/gpdb" \
-    GPUSER="gpadmin" \
-    PGPORT=5432 \
-    PGUSER=gpadmin \
-    PGDATABASE=postgres
+    GPUSER="gpadmin"
 
 RUN source /opt/utils/script-utils.sh \
  && echo "source ${GPHOME}/greenplum_path.sh" >> /etc/profile \
@@ -46,17 +42,24 @@ RUN source /opt/utils/script-utils.sh \
  && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
  && sed -i -r 's/^.*StrictHostKeyChecking\s+\w+/StrictHostKeyChecking no/' /etc/ssh/ssh_config \
  && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
- && echo "Clean up" && list_installed_packages && install__clean \
+ && mkdir -pv /run/sshd \
  && ulimit -n 65536 65536 \
- && ssh-keygen -A -v && mkdir -pv /run/sshd
+ && echo "Clean up" && list_installed_packages && install__clean
 
 USER ${GPUSER}
 RUN [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
  && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+ && ssh-keygen -A -v &&
  && chmod 600 ~/.ssh/authorized_keys
  
 ENV PATH="$PATH:${GPHOME}/bin" \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GPHOME}/lib"
+    USER=$(whoami) \
+    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GPHOME}/lib" \
+    COORDINATOR_DIRECTORY="${GPDATA}/coordinator" \
+    MASTER_DATA_DIRECTORY="${GPDATA}/coordinator/gpseg-1" \
+    PGPORT=5432 \
+    PGUSER=gpadmin \
+    PGDATABASE=postgres
 
 WORKDIR /home/${GPUSER}
 EXPOSE 5432 22
