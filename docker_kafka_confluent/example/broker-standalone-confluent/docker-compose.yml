@@ -1,11 +1,11 @@
----
 version: '3'
-services:
 
-  broker:
-    image: qpod/kafka:latest
+## Standalone kraft mode
+services:
+  kafka-broker:
+    image: docker.io/qpod/kafka:latest
+    container_name: kafka-broker
     hostname: broker
-    container_name: broker
     ports:
       - "9092:9092"
       - "9101:9101"
@@ -28,5 +28,6 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
     volumes:
-      - ./kafka-broker/data:/var/lib/kafka-broker/data
-      - ./kafka-broker/secrets:/etc/kafka-broker/secrets
+      - /data/kafka-confluent/broker/data:/var/lib/kafka-broker/data
+      - /data/kafka-confluent/broker/secrets:/etc/kafka-broker/secrets
+    command: bash
