@@ -2,7 +2,7 @@ version: "3"
 
 # Standalone kraft mode, ref: https://github.com/bitnami/containers/tree/main/bitnami/kafka#kafka-without-zookeeper-kraft
 # Note: the volume folder read/write permission is required for uid 1001 and gid 1000. use the command below for debug:
-# KAFKA_DATA_DIR="/data/kafka-bitnami/broker" && mkdir -pv $KAFKA_DATA_DIR && chmod -R ugo+rws $KAFKA_DATA_DIR
+# `KAFKA_DATA_DIR="/data/database/kafka-bitnami/broker" && mkdir -pv $KAFKA_DATA_DIR && chmod -R ugo+rws $KAFKA_DATA_DIR`
 
 services:
   kafka-broker:
@@ -10,7 +10,7 @@ services:
     container_name: kafka-broker
     hostname: broker
     ports:
-      - "9092:9092"
+      - "19092:9092"
     environment:
       ALLOW_PLAINTEXT_LISTENER: 'yes'
       KAFKA_BROKER_ID: 1
@@ -22,8 +22,8 @@ services:
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       KAFKA_CFG_LISTENERS: 'CONTROLLER://:9093,PLAINTEXT://:9092'
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-      # the `localhost` below needed to be changed to your host's external IP/hostname
-      KAFKA_CFG_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:9092'
+      # the `localhost` below needed to be changed to your host's external IP/hostname and external port
+      KAFKA_CFG_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:19092'
 
     volumes:
-      - /data/kafka-bitnami/broker:/bitnami
+      - /data/database/kafka-bitnami/broker:/bitnami
