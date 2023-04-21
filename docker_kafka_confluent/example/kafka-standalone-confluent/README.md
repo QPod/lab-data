@@ -11,11 +11,10 @@ docker-compose up -d
 
 ```bash
 docker run -it --rm \
-    -e ALLOW_PLAINTEXT_LISTENER='yes' \
+    -e CLUSTER_ID='k4hJjYlsRYSk9UQcZjN0rA' \
     -e KAFKA_BROKER_ID=1 \
     -e KAFKA_NODE_ID=1 \
     -e KAFKA_LOG_DIRS='/tmp/kraft-combined-logs' \
-    -e KAFKA_KRAFT_CLUSTER_ID='k4hJjYlsRYSk9UQcZjN0rA' \
     -e KAFKA_PROCESS_ROLES='broker,controller' \
     -e KAFKA_CONTROLLER_QUORUM_VOTERS='1@127.0.0.1:9093' \
     -e KAFKA_CONTROLLER_LISTENER_NAMES='CONTROLLER' \

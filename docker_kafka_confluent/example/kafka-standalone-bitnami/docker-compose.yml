@@ -10,7 +10,7 @@ services:
     container_name: kafka-broker
     hostname: broker
     ports:
-      - "19092:9092"
+      - "9092:9092"
     environment:
       ALLOW_PLAINTEXT_LISTENER: 'yes'
       KAFKA_BROKER_ID: 1
