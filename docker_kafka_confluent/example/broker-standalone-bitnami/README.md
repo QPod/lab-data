@@ -1,12 +1,17 @@
-# Debug
+# Start a Standalone mode single-node Kafka cluster in Kraft mode (using bitnami docker image)
+
+Reference: https://github.com/bitnami/containers/tree/main/bitnami/kafka#kafka-without-zookeeper-kraft
+
+Notice: the `localhost` in the `KAFKA_CFG_ADVERTISED_LISTENERS` needed to be changed to your host's external IP/hostname.
 
 ```bash
-# the `localhost` below needed to be changed to your host's external IP/hostname
-
-# Standalone kraft mode, ref: https://github.com/bitnami/containers/tree/main/bitnami/kafka#kafka-without-zookeeper-kraft
-
 KAFKA_DATA_DIR="/data/kafka-bitnami/broker" && mkdir -pv $KAFKA_DATA_DIR && chmod -R ugo+rws $KAFKA_DATA_DIR
+docker-compose up -d
+```
 
+## Debug and Development
+
+```bash
 docker run -it --rm \
     -e ALLOW_PLAINTEXT_LISTENER='yes' \
     -e KAFKA_BROKER_ID=1 \
