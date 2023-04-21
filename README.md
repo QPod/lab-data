@@ -17,8 +17,8 @@ Please generously STAR★ our project or donate to us!  [![GitHub Starts](https:
 ## Building blocks for data lake and pipelines projects
 
 Building blocks for the following big data project use cases are supported in this project:
-- Flink
-- Spark
-- Kafka
-- Elasticsearch
-- GreenplumDB
+
+- [Flink / Spark](https://hub.docker.com/r/qpod/bigdata)
+- [Kafka](https://hub.docker.com/r/qpod/kafka)
+- [Elasticsearch](https://hub.docker.com/r/qpod/elasticsearch)
+- [GreenplumDB](https://hub.docker.com/r/qpod/greenplum)
