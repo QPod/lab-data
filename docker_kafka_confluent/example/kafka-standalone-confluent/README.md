@@ -1,6 +1,6 @@
 # Start a Standalone mode single-node Kafka cluster in Kraft mode (using confluent kafka)
 
-Notice: the `localhost` in the `KAFKA_CFG_ADVERTISED_LISTENERS` needed to be changed to your host's external IP/hostname.
+Notice: the `localhost` in the `KAFKA_ADVERTISED_LISTENERS` needed to be changed to your host's external IP/hostname.
 
 ```bash
 KAFKA_DATA_DIR="/data/kafka-confluent/broker" && mkdir -pv $KAFKA_DATA_DIR && chmod -R ugo+rws $KAFKA_DATA_DIR
