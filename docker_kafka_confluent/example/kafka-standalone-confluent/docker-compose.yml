@@ -15,8 +15,8 @@ services:
     environment:
       CLUSTER_ID: 'k4hJjYlsRYSk9UQcZjN0rA'
       KAFKA_BROKER_ID: 1
-      KAFKA_NODE_ID: 1    
-      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_NODE_ID: 1
+      KAFKA_LOG_DIRS: '/var/lib/kafka/data'
       KAFKA_PROCESS_ROLES: 'broker,controller'
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@127.0.0.1:9093'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
@@ -32,5 +32,5 @@ services:
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
     volumes:
-      - /data/kafka-confluent/broker/:/var/lib/kafka-broker/
-    command: bash
+      - /data/kafka-confluent/broker/data:/var/lib/kafka/data
+      - /data/kafka-confluent/broker/secrets:/etc/kafka/secrets

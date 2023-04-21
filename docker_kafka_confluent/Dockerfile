@@ -22,7 +22,10 @@ RUN source /opt/utils/script-confluent-kafka.sh \
  && echo "Clean up" && list_installed_packages && install__clean
 
 ENV PATH=$PATH:$KAFKA_HOME/bin \
-    CLUSTER_ID="pUyrmY_RQHClQc9LPBJqTw"
+    CLUSTER_ID="pUyrmY_RQHClQc9LPBJqTw" \
+    KAFKA_LOG_DIRS="/var/lib/${COMPONENT}/data"
+
 EXPOSE 9092
 VOLUME ["/var/lib/${COMPONENT}/data", "/etc/${COMPONENT}/secrets"]
+ENTRYPOINT ["tini", "-g", "--"]
 CMD ["/etc/confluent/docker/run"]

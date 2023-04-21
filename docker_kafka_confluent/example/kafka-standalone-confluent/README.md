@@ -14,7 +14,7 @@ docker run -it --rm \
     -e CLUSTER_ID='k4hJjYlsRYSk9UQcZjN0rA' \
     -e KAFKA_BROKER_ID=1 \
     -e KAFKA_NODE_ID=1 \
-    -e KAFKA_LOG_DIRS='/tmp/kraft-combined-logs' \
+    -e KAFKA_LOG_DIRS='/var/lib/kafka/data' \ \
     -e KAFKA_PROCESS_ROLES='broker,controller' \
     -e KAFKA_CONTROLLER_QUORUM_VOTERS='1@127.0.0.1:9093' \
     -e KAFKA_CONTROLLER_LISTENER_NAMES='CONTROLLER' \
@@ -25,7 +25,8 @@ docker run -it --rm \
     --name kafka-broker \
     -h broker \
     -p 9092:9092 \
-    -v /data/kafka-confluent/broker/:/var/lib/kafka-broker/ \
+    -v /data/kafka-confluent/broker/data:/var/lib/kafka/data \
+    -v /data/kafka-confluent/broker/secrets:/etc/kafka/secrets \
 docker.io/qpod/kafka:latest bash
 
 /etc/confluent/docker/run
