@@ -5,10 +5,11 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} AS builder
 
 COPY rootfs /
 
-RUN source /opt/utils/script-utils.sh \
+RUN VERSION_GPDB_RELEASE="7.0.0-beta.3" \
+ && source /opt/utils/script-utils.sh \
  && install_apt /opt/utils/install_list_greenplum.apt \
  && apt-get -qq install -yq --no-install-recommends  gcc g++ bison flex cmake pkg-config ccache ninja-build \
- && install_tar_gz https://github.com/greenplum-db/gpdb/releases/download/7.0.0-beta.2/7.0.0-beta.2-src-full.tar.gz \
+ && install_tar_gz https://github.com/greenplum-db/gpdb/releases/download/${VERSION_GPDB_RELEASE}/${VERSION_GPDB_RELEASE}-src-full.tar.gz \
  && cd /opt/gpdb_src \
  && PYTHON=/opt/conda/bin/python3 ./configure --prefix=/opt/gpdb --with-perl --with-python --with-libxml --with-gssapi --with-openssl \
  && sudo make -j16 && sudo make install -j16
