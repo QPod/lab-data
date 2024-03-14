@@ -1,5 +1,9 @@
 % from: https://github.com/apache/flink/blob/master/flink-python/setup.py
-pemja>=0.4.1 apache-flink
+pemja
 pandas
 pyarrow
+apache-beam
+cloudpickle
+avro-python3
 requests
+% apache-flink  % tempfix bu install without deps

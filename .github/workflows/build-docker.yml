@@ -28,7 +28,7 @@ env:
 
 jobs:
   qpod_bigdata:
-    name: qpod/bigdata
+    name: "bigdata"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
           build_image bigdata latest         docker_bigdata/Dockerfile       && push_image
 
   qpod_elasticsearch:
-    name: qpod/elasticsearch
+    name: "elasticsearch"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
           build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
 
   qpod_kafka_confluent:
-    name: qpod/kafka_confluent
+    name: "kafka"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -55,7 +55,7 @@ jobs:
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
 
   qpod_greenplum:
-    name: qpod/greenplum
+    name: "greenplum"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
