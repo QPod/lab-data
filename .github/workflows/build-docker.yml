@@ -62,10 +62,18 @@ jobs:
       - run: |
           source ./tool.sh
           build_image greenplum latest      docker_greenplum/Dockerfile && push_image
+  qpod_postgres:
+    name: "postgres"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image postgres latest       docker_postgres/postgres-ext.Dockerfile && push_image
 
   ## Sync all images in this build (listed by "names") to mirror registry.
   sync_images:
-    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_greenplum"]
+    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres", "qpod_greenplum"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -76,4 +84,4 @@ jobs:
             --env-file /tmp/docker.env \
             -v $(pwd):/tmp \
             -w /tmp \
-            ${DOCKER_IMG_PREFIX:-qpod}/docker-kit python /opt/utils/image-syncer/run_jobs.py
+            qpod/docker-kit python /opt/utils/image-syncer/run_jobs.py
