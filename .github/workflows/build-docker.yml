@@ -1,0 +1,87 @@
+name: build-docker-images
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - "*.md"
+
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - "*.md"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  REGISTRY_URL: "docker.io"   # docker.io or other registry URL, DOCKER_REGISTRY_USERNAME/DOCKER_REGISTRY_PASSWORD to be set in CI env.
+  BUILDKIT_PROGRESS: "plain"  # Full logs for CI build.
+
+  # DOCKER_REGISTRY_USERNAME and DOCKER_REGISTRY_PASSWORD is required for docker image push, they should be set in CI secrets.
+  DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+  DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+  
+  # used to sync image to mirror registry
+  DOCKER_MIRROR_REGISTRY_USERNAME: ${{ secrets.DOCKER_MIRROR_REGISTRY_USERNAME }}
+  DOCKER_MIRROR_REGISTRY_PASSWORD: ${{ secrets.DOCKER_MIRROR_REGISTRY_PASSWORD }}
+
+jobs:
+  qpod_bigdata:
+    name: "bigdata"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image bigdata latest         docker_bigdata/Dockerfile       && push_image
+
+  qpod_elasticsearch:
+    name: "elasticsearch"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
+
+  qpod_kafka_confluent:
+    name: "kafka"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
+
+  qpod_greenplum:
+    name: "greenplum"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image greenplum latest      docker_greenplum/Dockerfile && push_image
+  qpod_postgres:
+    name: "postgres"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image postgres latest       docker_postgres/postgres-ext.Dockerfile && push_image
+
+  ## Sync all images in this build (listed by "names") to mirror registry.
+  sync_images:
+    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres", "qpod_greenplum"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          printenv > /tmp/docker.env
+          docker run --rm \
+            --env-file /tmp/docker.env \
+            -v $(pwd):/tmp \
+            -w /tmp \
+            qpod/docker-kit python /opt/utils/image-syncer/run_jobs.py

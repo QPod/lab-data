@@ -20,6 +20,7 @@ RUN source /opt/utils/script-setup.sh \
  && echo "Install mysql client:" && setup_mysql_client \
  && echo "Install mongosh:" && setup_mongosh_client \
  && echo "Install redis-cli:" && setup_redis_client \
- && echo "Install pyflink:" && install_pip /opt/utils/list_install_pip_pyflink.txt \
  && echo "Install pyspark:" && install_pip /opt/utils/list_install_pip_pyspark.txt \
+ && echo "Install pyflink:" && install_pip /opt/utils/list_install_pip_pyflink.txt \
+ && pip install --no-deps apache-flink \
  && echo "Clean up" && list_installed_packages && install__clean

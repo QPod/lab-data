@@ -1,4 +1,4 @@
-# GreenplumDB 
+# GreenplumDB
 
 This is the docker contianer for starting a GreenplumDB 7 cluster.
 https://docs.vmware.com/en/VMware-Greenplum/7/greenplum-database/landing-index.html
@@ -25,12 +25,13 @@ psql -d postgres -c "ALTER ROLE gpadmin WITH PASSWORD 'gpadmin';"
 
 Please refer to the file `example/gpdb-single-vm/docker-compose.yml`.
 Note: it is neded to create folders `primary1` and `primary2` for segment nodes in `/data/database/greenplum`:
-```
+
+```bash
 mkdir -pv /data/database/greenplum/primary1
 mkdir -pv /data/database/greenplum/primary2
 ```
 
-# Debug
+## Debug
 
 ```bash
 # to build the docker image
