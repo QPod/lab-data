@@ -5,7 +5,7 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} AS builder
 
 COPY rootfs /
 
-RUN VERSION_GPDB_RELEASE="7.0.0-beta.3" \
+RUN VERSION_GPDB_RELEASE=$(curl -sL https://github.com/greenplum-db/gpdb/releases.atom | grep 'releases/tag' | grep "7." | head -1 | grep -Po '\d[\d.]+' ) \
  && source /opt/utils/script-utils.sh \
  && install_apt /opt/utils/install_list_greenplum.apt \
  && apt-get -qq install -yq --no-install-recommends  gcc g++ bison flex cmake pkg-config ccache ninja-build \
