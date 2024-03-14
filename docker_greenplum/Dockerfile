@@ -5,7 +5,7 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} AS builder
 
 COPY rootfs /
 
-RUN source /opt/utils/script-utils.sh \
+RUN set -x && source /opt/utils/script-utils.sh \
  && install_apt /opt/utils/install_list_greenplum.apt \
  && apt-get -qq install -yq --no-install-recommends  gcc g++ bison flex cmake pkg-config ccache ninja-build \
  && VERSION_GPDB_RELEASE=$(curl -sL https://github.com/greenplum-db/gpdb/releases.atom | grep 'releases/tag' | grep "7." | head -1 | grep -Po '\d[\d.]+' ) \
@@ -27,7 +27,7 @@ ENV GPHOME="/opt/gpdb" \
     GPDATA="/data/gpdb" \
     GPUSER="gpadmin"
 
-RUN source /opt/utils/script-utils.sh \
+RUN set -x && source /opt/utils/script-utils.sh \
  && echo "source ${GPHOME}/greenplum_path.sh" >> /etc/profile \
  && useradd -u 1000 ${GPUSER} -s /bin/bash -d /home/${GPUSER} \
  && usermod -aG root ${GPUSER} \
@@ -50,7 +50,8 @@ RUN source /opt/utils/script-utils.sh \
  && echo "Clean up" && list_installed_packages && install__clean
 
 USER ${GPUSER}
-RUN [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
+RUN set -x && whoami \
+ && [ -e ~/.ssh/id_rsa.pub ] || ssh-keygen -t rsa -b 4096 -N "" -C GreenplumDB -f ~/.ssh/id_rsa \
  && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
  && ssh-keygen -A -v \
  && chmod 600 ~/.ssh/authorized_keys \

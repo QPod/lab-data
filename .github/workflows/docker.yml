@@ -65,7 +65,7 @@ jobs:
 
   ## Sync all images in this build (listed by "names") to mirror registry.
   sync_images:
-    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_greenplum"]
+    needs: ["qpod_elasticsearch", "qpod_kafka_confluent", "qpod_greenplum"]  # "qpod_bigdata", 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,12 +1,5 @@
 % from: https://github.com/apache/flink/blob/master/flink-python/setup.py
-apache-flink
+pemja>=0.4.1 apache-flink
 pandas
 pyarrow
 requests
-%py4j==0.10.9.3
-%apache-beam==2.38.0
-%cloudpickle==2.1.0
-%avro-python3>=1.8.1,!=1.9.2,<1.10.0
-%fastavro>=1.1.0,<1.4.8
-%protobuf<3.18
-%pemja==0.2.4
