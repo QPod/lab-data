@@ -31,7 +31,7 @@ jobs:
     name: "bigdata"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
           build_image bigdata latest         docker_bigdata/Dockerfile       && push_image
@@ -40,7 +40,7 @@ jobs:
     name: "elasticsearch"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
           build_image elasticsearch latest   docker_elasticsearch/Dockerfile && push_image
@@ -49,7 +49,7 @@ jobs:
     name: "kafka"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
@@ -58,14 +58,14 @@ jobs:
     name: "greenplum"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
           build_image greenplum latest      docker_greenplum/Dockerfile && push_image
 
   ## Sync all images in this build (listed by "names") to mirror registry.
   sync_images:
-    needs: ["qpod_elasticsearch", "qpod_kafka_confluent", "qpod_greenplum"]  # "qpod_bigdata", 
+    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_greenplum"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
