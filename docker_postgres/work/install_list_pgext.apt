@@ -4,7 +4,7 @@ postgresql-${PG_MAJOR}-pgvector
 postgresql-${PG_MAJOR}-cron
 postgresql-${PG_MAJOR}-wal2json
 timescaledb-2-postgresql-${PG_MAJOR}
-postgresql-${PG_MAJOR}-citus-12.1 
+postgresql-${PG_MAJOR}-citus-12.1
 pg-graphql  % https://github.com/supabase/pg_graphql
 pg-net      % https://github.com/supabase/pg_net
 % postgresql-*-pgdg-pgroonga  % TODO: postgresql-15-pgdg-pgroonga : Depends: libgroonga0 (>= 13.0.8) but 13.0.0+dfsg-3~deb12u1 is to be installed 
