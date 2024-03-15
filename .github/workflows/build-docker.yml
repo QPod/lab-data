@@ -63,13 +63,13 @@ jobs:
           source ./tool.sh
           build_image greenplum latest      docker_greenplum/Dockerfile && push_image
   qpod_postgres:
-    name: "postgres"
+    name: "postgres-ext"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
-          build_image postgres latest       docker_postgres/postgres-ext.Dockerfile && push_image
+          build_image postgres-ext latest   docker_postgres/postgres-ext.Dockerfile && push_image
 
   ## Sync all images in this build (listed by "names") to mirror registry.
   sync_images:
