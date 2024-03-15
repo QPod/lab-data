@@ -41,7 +41,7 @@ docker run -it \
     -p=9092:9092 \
     -v /data/kafka-confluent/broker/:/var/lib/kafka-broker/ \
     -v $(pwd):/root/dev \
-    qpod/jdk11 bash
+    qpod/jdk-11 bash
 
 export KAFKA_BROKER_ID=1
 export KAFKA_LISTENER_SECURITY_PROTOCOL_MAP='CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
