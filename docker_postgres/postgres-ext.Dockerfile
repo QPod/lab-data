@@ -23,4 +23,8 @@ RUN set -x && . /opt/utils/script-utils.sh \
  && curl -fsSL "https://packagecloud.io/pigsty/pgsql/gpgkey" | gpg --dearmor > /etc/apt/trusted.gpg.d/pigsty_pgsql.gpg \
  && echo "deb https://packagecloud.io/pigsty/pgsql/${DISTRO_NAME}/ ${DISTRO_CODE_NAME} main" | sudo tee /etc/apt/sources.list.d/pigsty_pgsql.list \
  && install_apt /opt/utils/install_list_pgext.apt \
+ && ls -alh /usr/share/postgresql/*/extension/*.control \
  && echo "Clean up" && list_installed_packages && install__clean
+
+USER postgres
+WORKDIR /var/lib/postgresql
