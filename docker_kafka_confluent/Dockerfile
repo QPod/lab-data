@@ -1,6 +1,6 @@
 # Distributed under the terms of the Modified BSD License.
 ARG BASE_NAMESPACE
-ARG BASE_IMG="jdk11"
+ARG BASE_IMG="jdk-11"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 ARG KAFKA_VERSION="7.3.3"
