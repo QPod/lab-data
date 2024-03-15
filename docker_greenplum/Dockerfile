@@ -37,7 +37,7 @@ RUN set -x && source /opt/utils/script-utils.sh \
  && chown -R ${GPUSER}:${GPUSER} ${GPHOME} ${GPDATA} /home/${GPUSER} \
  && install_apt /opt/utils/install_list_greenplum.apt \
  && export PATH="${PATH}:${GPHOME}/bin" && cd ${GPHOME}/bin && ls -alh \
- && PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
+ && PYTHON_SITE=$(/opt/conda/bin/python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
  && sudo ln -s ${GPHOME}/lib/python/* ${PYTHON_SITE}/ \
  && pip install -U psutil pygresql pyyaml \
  && cp ${GPHOME}/docs/cli_help/gpconfigs/gpinitsystem_config ${GPHOME}/conf/gpinitsystem_config \
