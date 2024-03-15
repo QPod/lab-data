@@ -2,12 +2,11 @@
 
 ARG BASE_NAMESPACE
 ARG BASE_IMG="postgres"
-FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} as builder
+FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"
 
 COPY work /opt/utils/
-COPY --from=builder /opt /opt
 
 RUN set -x && . /opt/utils/script-utils.sh \
  && apt-get update && apt-get install -y gettext \
