@@ -10,7 +10,6 @@ COPY work /opt/utils/
 
 RUN set -x && . /opt/utils/script-utils.sh \
  && apt-get update && apt-get install -y gettext \
- && envsubst < /opt/utils/install_list_pgext.apt > /opt/utils/install_list_pgext.apt \
  && DISTRO_NAME=$(awk '{ print tolower($0) }' <<< $(lsb_release -is)) \
  && DISTRO_CODE_NAME=$(lsb_release -cs) \
  # apt source for: https://packagecloud.io/citusdata/community
@@ -22,8 +21,11 @@ RUN set -x && . /opt/utils/script-utils.sh \
  # apt source for: https://packagecloud.io/pigsty/pgsql
  && curl -fsSL "https://packagecloud.io/pigsty/pgsql/gpgkey" | gpg --dearmor > /etc/apt/trusted.gpg.d/pigsty_pgsql.gpg \
  && echo "deb https://packagecloud.io/pigsty/pgsql/${DISTRO_NAME}/ ${DISTRO_CODE_NAME} main" | sudo tee /etc/apt/sources.list.d/pigsty_pgsql.list \
+ && envsubst < /opt/utils/install_list_pgext.tpl.apt > /opt/utils/install_list_pgext.apt \
+ && rm -rf /opt/utils/install_list_pgext.tpl.apt \
+ && echo "To install PG extensions: $(cat /opt/utils/install_list_pgext.apt)" \
  && install_apt /opt/utils/install_list_pgext.apt \
- && ls -alh /usr/share/postgresql/*/extension/*.control \
+ && ls -alh /usr/share/postgresql/*/extension/*.control | sort \
  && echo "Clean up" && list_installed_packages && install__clean
 
 USER postgres

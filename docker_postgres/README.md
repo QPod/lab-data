@@ -3,6 +3,8 @@
 ## Debug
 
 ```shell
+BUILDKIT_PROGRESS=plain docker build -t postgres-ext -f ./postgres-ext.Dockerfile --build-arg BASE_NAMESPACE=qpod0dev .
+
 IMG="qpod/postgres-ext"
 
 docker run -d \
