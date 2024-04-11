@@ -8,7 +8,7 @@ LABEL maintainer="haobibo@gmail.com"
 
 COPY rootfs /
 
-RUN set -x && . /opt/utils/script-utils.sh && ./opt/utils/script-setup-pg_ext.sh \
+RUN set -x && . /opt/utils/script-utils.sh && . /opt/utils/script-setup-pg_ext.sh \
  && apt-get update && apt-get install -y gettext \
  && envsubst < /opt/utils/install_list_pgext.tpl.apt > /opt/utils/install_list_pgext.apt \
  && rm -rf /opt/utils/install_list_pgext.tpl.apt \
