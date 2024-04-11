@@ -16,6 +16,7 @@ RUN set -x && . /opt/utils/script-utils.sh && . /opt/utils/script-setup-pg_ext_m
  && install_apt /opt/utils/install_list_pgext.apt \
  && . /opt/utils/script-setup-pg_ext.sh \
  && ls -alh /usr/share/postgresql/*/extension/*.control | sort \
+ && echo "include_dir='./conf.d'" >> /var/lib/postgresql/data/postgresql.conf \
  && echo "Clean up" && list_installed_packages && install__clean
 
 USER postgres
