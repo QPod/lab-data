@@ -21,3 +21,8 @@ SELECT * FROM pg_extension;
 SELECT * FROM pg_available_extensions ORDER BY name;
 CREATE EXTENSION "vector";
 ```
+
+## Reference
+
+- article: https://mp.weixin.qq.com/s/CduvvvuUDjqNtvKA1OblAQ
+- code: https://github.com/digoal/postgresql_docker_builder/blob/main/pg14_amd64/1.sh
