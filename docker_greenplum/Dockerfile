@@ -8,10 +8,10 @@ COPY rootfs /
 RUN set -x && source /opt/utils/script-utils.sh \
  && install_apt /opt/utils/install_list_greenplum.apt \
  && apt-get -qq install -yq --no-install-recommends  gcc g++ bison flex cmake pkg-config ccache ninja-build \
- && VERSION_GPDB_RELEASE=$(curl -sL https://github.com/greenplum-db/gpdb/releases.atom | grep 'releases/tag' | grep "7." | head -1 | grep -Po '\d[\d.]+' ) \
- && URL_GBDP="https://github.com/greenplum-db/gpdb/releases/download/${VERSION_GPDB_RELEASE}/${VERSION_GPDB_RELEASE}-src-full.tar.gz" \
+ && VERSION_GPDB_RELEASE=$(curl -sL https://github.com/greenplum-db/gpdb/releases.atom | grep 'releases/tag' | grep "/7." | head -1 | grep -Po '\d[\d.]+' ) \
+ && URL_GBDP="https://github.com/greenplum-db/gpdb/archive/refs/tags/${VERSION_GPDB_RELEASE}.tar.gz" \
  && echo "Downloading GBDP src release ${VERSION_GPDB_RELEASE} from: ${URL_GBDP}" \
- && install_tar_gz $URL_GBDP \
+ && install_tar_gz $URL_GBDP && mv /opt/gpdb-* /opt/gpdb_src \
  && cd /opt/gpdb_src \
  && PYTHON=/opt/conda/bin/python3 ./configure --prefix=/opt/gpdb --with-perl --with-python --with-libxml --with-gssapi --with-openssl \
  && sudo make -j16 && sudo make install -j16
