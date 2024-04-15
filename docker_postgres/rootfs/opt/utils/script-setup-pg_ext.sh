@@ -1,6 +1,10 @@
 echo "To install PG extensions: $(cat /opt/utils/install_list_pgext.apt)"
 install_apt /opt/utils/install_list_pgext.apt
 
+## remove un-used PG versions and extensions
+find /usr/lib/postgresql   -mindepth 1 -maxdepth 1 -type d -not -name "${PG_MAJOR}" -not -name "lib" -exec rm -rf {} \;
+find /usr/share/postgresql -mindepth 1 -maxdepth 1 -type d -not -name "${PG_MAJOR}" -exec rm -rf {} \;
+
 export USE_PGXS=1
 
 setup_apache_age() {
