@@ -12,8 +12,17 @@ services:
 
   svc-jupyter:
       image: quay.io/jupyter/minimal-notebook
-      container_name: dev-jupyter
-      ports:
-        - 8888:8888
       depends_on:
         - db-postgres
+      container_name: dev-jupyter
+      hostname: jupyter
+      user: root
+      environment:
+        NB_USER: root
+        NB_UID: 0
+        NB_GID: 0
+      ports:
+        - 8888:8888
+      volumes:
+        - "./:/home/root/work"
+      command: ["start-notebook.py", "--allow-root"]

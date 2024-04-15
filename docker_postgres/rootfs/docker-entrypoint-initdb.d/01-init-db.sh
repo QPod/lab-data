@@ -10,7 +10,7 @@ echo "include_dir='./conf.d'" >> ${PGDATA}/postgresql.conf
 sudo mv /opt/utils/pg-ext.conf ${PGDATA}/conf.d/
 
 cat ${PGDATA}/conf.d/*
-cat ${PGDATA}/postgresql.conf
+tail ${PGDATA}/postgresql.conf
 
 
 # https://github.com/docker-library/postgres/blob/master/docker-entrypoint.sh
