@@ -1,5 +1,3 @@
-version: '3'
-
 ## Standalone kraft mode - confluent kafka: https://github.com/confluentinc/cp-all-in-one/blob/7.3.0-post/cp-all-in-one-kraft/docker-compose.yml
 # Note: the volume folder read/write permission is required for uid 1001 and gid 1000. use the command below for debug:
 # `KAFKA_DATA_DIR="/data/database/kafka-bitnami/broker" && mkdir -pv $KAFKA_DATA_DIR && chmod -R ugo+rws $KAFKA_DATA_DIR`

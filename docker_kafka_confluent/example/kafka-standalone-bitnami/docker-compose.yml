@@ -1,5 +1,3 @@
-version: "3"
-
 # Standalone kraft mode, ref: https://github.com/bitnami/containers/tree/main/bitnami/kafka#kafka-without-zookeeper-kraft
 # Note: the volume folder read/write permission is required for uid 1001 and gid 1000. use the command below for debug:
 # `KAFKA_DATA_DIR="/data/database/kafka-bitnami/broker" && mkdir -pv $KAFKA_DATA_DIR && chmod -R ugo+rws $KAFKA_DATA_DIR`
