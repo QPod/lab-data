@@ -9,7 +9,6 @@ postgresql-${PG_MAJOR}-pg-qualstats
 postgresql-${PG_MAJOR}-auto-failover
 
 % the following extensions does NOT requires to be listed in shared_preload_libraries
-postgresql-server-dev-${PG_MAJOR}  % required to build some extensions
 postgresql-contrib
 postgresql-${PG_MAJOR}-postgis*
 postgresql-${PG_MAJOR}-cron
