@@ -7,7 +7,7 @@ ls -alh /usr/share/postgresql/${PG_MAJOR}/extension/*.control
 
 mkdir -pv ${PGDATA}/conf.d
 echo "include_dir='./conf.d'" >> ${PGDATA}/postgresql.conf
-mv /opt/utils/pg-ext.conf ${PGDATA}/conf.d/
+sudo mv /opt/utils/pg-ext.conf ${PGDATA}/conf.d/
 
 cat ${PGDATA}/conf.d/*
 cat ${PGDATA}/postgresql.conf
