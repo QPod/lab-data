@@ -7,7 +7,7 @@ setup_apache_age() {
     cd /tmp
     git clone --depth 1 -b PG15 https://github.com/apache/age
     cd /tmp/age
-    apt-get install flex bison build-essential libreadline-dev zlib1g-dev
+    apt-get -qq install -yq --no-install-recommends flex bison build-essential libreadline-dev zlib1g-dev
     make -j8 && make install
 }
 setup_apache_age
