@@ -1,12 +1,19 @@
+% these extensions requries to be listed in shared_preload_libraries
+postgresql-${PG_MAJOR}-citus-12.1
+timescaledb-2-postgresql-${PG_MAJOR}
+postgresql-${PG_MAJOR}-pgvector
+pg-net      % https://github.com/supabase/pg_net
+postgresql-${PG_MAJOR}-squeeze
+postgresql-${PG_MAJOR}-pgaudit
+postgresql-${PG_MAJOR}-pg-qualstats
+postgresql-${PG_MAJOR}-auto-failover
+
+% the following extensions does NOT requires to be listed in shared_preload_libraries
+postgresql-server-dev-${PG_MAJOR}  % required to build some extensions
 postgresql-contrib
 postgresql-${PG_MAJOR}-postgis*
-postgresql-${PG_MAJOR}-pgvector
 postgresql-${PG_MAJOR}-cron
 postgresql-${PG_MAJOR}-wal2json
-timescaledb-2-postgresql-${PG_MAJOR}
-postgresql-${PG_MAJOR}-citus-12.1
-pg-graphql  % https://github.com/supabase/pg_graphql
-pg-net      % https://github.com/supabase/pg_net
 postgresql-${PG_MAJOR}-dirtyread
 postgresql-${PG_MAJOR}-extra-window-functions
 postgresql-${PG_MAJOR}-first-last-agg
@@ -22,11 +29,9 @@ postgresql-${PG_MAJOR}-plproxy
 postgresql-${PG_MAJOR}-prefix
 postgresql-${PG_MAJOR}-rational
 postgresql-${PG_MAJOR}-rdkit
-postgresql-${PG_MAJOR}-pg-qualstats
 postgresql-${PG_MAJOR}-pg-stat-kcache
 postgresql-${PG_MAJOR}-pg-wait-sampling
 postgresql-${PG_MAJOR}-pgfincore
-postgresql-${PG_MAJOR}-pgaudit
 postgresql-${PG_MAJOR}-pgpool2
 postgresql-${PG_MAJOR}-pgrouting
 postgresql-${PG_MAJOR}-pgrouting-doc
@@ -57,12 +62,11 @@ postgresql-${PG_MAJOR}-mimeo
 postgresql-${PG_MAJOR}-pgmp
 postgresql-${PG_MAJOR}-preprepare
 postgresql-${PG_MAJOR}-prioritize
-postgresql-${PG_MAJOR}-squeeze
 postgresql-${PG_MAJOR}-toastinfo
 postgresql-${PG_MAJOR}-unit
-postgresql-${PG_MAJOR}-auto-failover
-pg-auto-failover-cli
 postgresql-plpython3-${PG_MAJOR}
+pg-auto-failover-cli
+pg-graphql  % https://github.com/supabase/pg_graphql
 pgagroal
 pgpool2
 pgbouncer

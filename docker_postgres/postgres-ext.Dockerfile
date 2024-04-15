@@ -9,14 +9,14 @@ LABEL maintainer="haobibo@gmail.com"
 COPY rootfs /
 
 RUN set -x && . /opt/utils/script-utils.sh && . /opt/utils/script-setup-pg_ext_mirror.sh \
+ ## Generate a package list based on PG_MAJOR version
  && apt-get update && apt-get install -y gettext \
  && envsubst < /opt/utils/install_list_pgext.tpl.apt > /opt/utils/install_list_pgext.apt \
  && rm -rf /opt/utils/install_list_pgext.tpl.apt \
- && echo "To install PG extensions: $(cat /opt/utils/install_list_pgext.apt)" \
- && install_apt /opt/utils/install_list_pgext.apt \
+ ## Install extensions
  && . /opt/utils/script-setup-pg_ext.sh \
- && ls -alh /usr/share/postgresql/*/extension/*.control | sort \
- && echo "include_dir='./conf.d'" >> /var/lib/postgresql/data/postgresql.conf \
+ ## Hack: fix system python / conda python
+ && cp -rf /opt/conda/lib/python3.11/platform.py.bak /opt/conda/lib/python3.11/platform.py \
  && echo "Clean up" && list_installed_packages && install__clean
 
 USER postgres

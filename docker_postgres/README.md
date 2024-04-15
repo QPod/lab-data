@@ -3,57 +3,19 @@
 ## Debug
 
 ```shell
-BUILDKIT_PROGRESS=plain docker build -t postgres-ext -f ./postgres-ext.Dockerfile --build-arg BASE_NAMESPACE=qpod0dev .
+BUILDKIT_PROGRESS=plain \
+docker build -t qpod0dev/postgres-ext -f ./postgres-ext.Dockerfile --build-arg BASE_NAMESPACE=qpod0dev .
 
-IMG="qpod0dev/postgres-ext"
-
+( docker rm db-postgres || true )
 docker run -d \
     --name db-postgres \
     -p 5432:5432 \
     -e POSTGRES_PASSWORD=pg-password \
-    $IMG
+    qpod0dev/postgres-ext
 
 docker exec -it db-postgres bash
 
-ls -alh /usr/share/postgresql/15/extension/*.control
-```
-
-```sql
-SELECT extname AS name, extversion AS ver
-FROM pg_extension ORDER BY extname;
-
-SELECT name, default_version AS ver, comment
-FROM pg_available_extensions ORDER BY name;
-
-
-CREATE OR REPLACE PROCEDURE enable_all_extensions()
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    extension_name TEXT;
-BEGIN
-    FOR extension_name IN
-        SELECT name FROM pg_available_extensions
-        WHERE name NOT IN (SELECT extname AS name FROM pg_extension)
-        ORDER BY name
-    LOOP
-        BEGIN
-            EXECUTE format('CREATE EXTENSION IF NOT EXISTS %I', extension_name);
-        EXCEPTION WHEN OTHERS THEN
-            -- Optionally log the error or do nothing to continue with the next extension
-            RAISE NOTICE 'Failed to create extension %: %', extension_name, SQLERRM;
-        END;
-    END LOOP;
-END;
-$$;
-
-CREATE EXTENSION "hstore";
-CALL enable_all_extensions();
-
-SELECT name, default_version AS ver
-FROM pg_available_extensions
-WHERE name NOT IN (SELECT extname AS name FROM pg_extension)
-ORDER BY name;
+ls -alh /usr/share/postgresql/${PG_MAJOR}/extension/*.control
 ```
 
 ## Reference
@@ -62,6 +24,19 @@ ORDER BY name;
 - code: https://github.com/digoal/postgresql_docker_builder/blob/main/pg14_amd64/1.sh
 
 ## List of Extensions
+
+```sql
+SELECT extname AS name, extversion AS ver
+FROM pg_extension ORDER BY extname;
+
+SELECT name, default_version AS ver, comment
+FROM pg_available_extensions ORDER BY name;
+
+SELECT name, default_version AS ver
+FROM pg_available_extensions
+WHERE name NOT IN (SELECT extname AS name FROM pg_extension)
+ORDER BY name;
+```
 
 | name                           | ver    | comment                                                                                                               |
 |--------------------------------|--------|-----------------------------------------------------------------------------------------------------------------------|
