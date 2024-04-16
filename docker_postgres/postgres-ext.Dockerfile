@@ -1,7 +1,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 ARG BASE_NAMESPACE
-ARG BASE_IMG="postgres"
+ARG BASE_IMG="postgres-16"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
 LABEL maintainer="haobibo@gmail.com"

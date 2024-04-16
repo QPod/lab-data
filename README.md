@@ -1,7 +1,7 @@
 # QPod Data Lab - Docker Image Stack for BigData
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-green.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/QPod/lab-data/docker.yml?branch=main)](https://github.com/QPod/lab-data/actions/workflows/docker.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/QPod/lab-data/build-docker.yml?branch=main)](https://github.com/QPod/lab-data/actions/workflows/build-docker.yml)
 [![Recent Code Update](https://img.shields.io/github/last-commit/QPod/lab-data.svg)](https://github.com/QPod/lab-data/stargazers)
 
 Please generously STAR★ our project or donate to us!  [![GitHub Starts](https://img.shields.io/github/stars/QPod/data-lab.svg?label=Stars&style=social)](https://github.com/QPod/data-lab/stargazers)

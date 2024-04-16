@@ -2,15 +2,21 @@
 postgresql-${PG_MAJOR}-citus-12.1
 timescaledb-2-postgresql-${PG_MAJOR}
 postgresql-${PG_MAJOR}-pgvector
-pg-net      % https://github.com/supabase/pg_net
 postgresql-${PG_MAJOR}-squeeze
 postgresql-${PG_MAJOR}-pgaudit
 postgresql-${PG_MAJOR}-pg-qualstats
 postgresql-${PG_MAJOR}-auto-failover
+% pg-net      % installed from source code: https://github.com/supabase/pg_net
 
 % the following extensions does NOT requires to be listed in shared_preload_libraries
+
+%% postgis
+postgis osm2pgrouting
+postgresql-${PG_MAJOR}-postgis
+postgresql-${PG_MAJOR}-pgrouting
+postgresql-${PG_MAJOR}-ogr-fdw      % spatial foreign data wrapper that uses GDAL
+
 postgresql-contrib
-postgresql-${PG_MAJOR}-postgis*
 postgresql-${PG_MAJOR}-cron
 postgresql-${PG_MAJOR}-wal2json
 postgresql-${PG_MAJOR}-dirtyread
@@ -53,7 +59,6 @@ postgresql-${PG_MAJOR}-icu-ext
 postgresql-${PG_MAJOR}-orafce
 postgresql-${PG_MAJOR}-mysql-fdw
 postgresql-${PG_MAJOR}-oracle-fdw
-postgresql-${PG_MAJOR}-ogr-fdw
 postgresql-${PG_MAJOR}-tds-fdw
 postgresql-${PG_MAJOR}-credcheck
 postgresql-${PG_MAJOR}-decoderbufs
@@ -80,7 +85,3 @@ libpq-dev
 pgbadger
 pgloader
 ora2pg
-
-% postgresql-*-pgdg-pgroonga  % TODO: postgresql-15-pgdg-pgroonga : Depends: libgroonga0 (>= 13.0.8) but 13.0.0+dfsg-3~deb12u1 is to be installed 
-% postgresql-pgml-*  % TODO: many python packages
-% echo "deb https://apt.postgresml.org ${DISTRO_CODE_NAME} maintainer" | sudo tee /etc/apt/sources.list.d/postgresml.list

@@ -4,14 +4,14 @@
 
 ```shell
 BUILDKIT_PROGRESS=plain \
-docker build -t qpod0dev/postgres-ext -f ./postgres-ext.Dockerfile --build-arg BASE_NAMESPACE=qpod0dev .
+docker build -t qpod0dev/postgres-16-ext -f ./postgres-ext.Dockerfile --build-arg BASE_NAMESPACE=qpod0dev .
 
-( docker rm db-postgres || true )
+( docker stop db-postgres && docker rm db-postgres || true )
 docker run -d \
     --name db-postgres \
     -p 5432:5432 \
-    -e POSTGRES_PASSWORD=pg-password \
-    qpod0dev/postgres-ext
+    -e POSTGRES_PASSWORD=postgres \
+    qpod0dev/postgres-16-ext
 
 docker exec -it db-postgres bash
 
@@ -26,14 +26,11 @@ ls -alh /usr/share/postgresql/${PG_MAJOR}/extension/*.control
 ## List of Extensions
 
 ```sql
-SELECT extname AS name, extversion AS ver
-FROM pg_extension ORDER BY extname;
+SELECT extname AS name, extversion AS ver FROM pg_extension ORDER BY extname;
 
-SELECT name, default_version AS ver, comment
-FROM pg_available_extensions ORDER BY name;
+SELECT name, default_version AS ver, comment FROM pg_available_extensions ORDER BY name;
 
-SELECT name, default_version AS ver
-FROM pg_available_extensions
+SELECT name, default_version AS ver FROM pg_available_extensions
 WHERE name NOT IN (SELECT extname AS name FROM pg_extension)
 ORDER BY name;
 ```

@@ -19,5 +19,5 @@ BEGIN
 END;
 $$;
 
-CREATE EXTENSION "hstore";
+CREATE EXTENSION IF NOT EXISTS "hstore";
 -- CALL enable_all_extensions();
