@@ -64,7 +64,7 @@ jobs:
           build_image greenplum latest      docker_greenplum/Dockerfile && push_image
 
   qpod_postgres:
-    name: "postgres-ext"
+    name: "postgres-16-ext,postgres-15-ext"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
