@@ -1,7 +1,7 @@
 services:
   db-postgres:
-  # su postgres && psql -d casdoor -U pg-casdoor-username
-      image: qpod0dev/postgres-ext
+      # su postgres && psql -d casdoor -U pg-casdoor-username
+      image: qpod/postgres-16-ext
       container_name: db-postgres
       environment:
         POSTGRES_DB: postgres
@@ -24,3 +24,4 @@ services:
       volumes:
         - "./:/home/root/work"
       command: ["start-notebook.py", "--allow-root"]
+      ## docker logs dev-jupyter 2>&1|grep token=
