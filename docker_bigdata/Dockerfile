@@ -15,7 +15,7 @@ ENV PATH=$PATH:${CONDA_PREFIX}/bin:${JAVA_HOME}/bin
 RUN source /opt/utils/script-setup.sh \
  && source /opt/utils/script-setup-db-clients.sh \
  && install_apt /opt/utils/install_list_base.apt \
- && echo "Install tini" && setup_tini \
+ # && echo "Install tini" && setup_tini \
  && echo "Install postgresql client:" && setup_postgresql_client \
  && echo "Install mysql client:" && setup_mysql_client \
  && echo "Install mongosh:" && setup_mongosh_client \

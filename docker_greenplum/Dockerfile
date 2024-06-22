@@ -10,7 +10,7 @@ RUN set -x && source /opt/utils/script-utils.sh \
  && apt-get -qq install -yq --no-install-recommends  gcc g++ bison flex cmake pkg-config ccache ninja-build \
  # && VERSION_GPDB_RELEASE=$(curl -sL https://github.com/greenplum-db/gpdb/releases.atom | grep 'releases/tag' | grep "/7." | head -1 | grep -Po '\d[\d.]+' ) \
  # && URL_GBDP="https://github.com/greenplum-db/gpdb/archive/refs/tags/${VERSION_GPDB_RELEASE}.tar.gz" \
- && URL_GBDP="https://github.com/greenplum-db/gpdb-archive/archive/refs/heads/main.zip" \
+ && URL_GBDP="https://github.com/greenplum-db/gpdb-archive/archive/refs/heads/main.tar.gz" \
  && echo "Downloading GBDP src release ${VERSION_GPDB_RELEASE:-archive} from: ${URL_GBDP}" \
  && install_tar_gz $URL_GBDP && mv /opt/gpdb-* /opt/gpdb_src \
  && cd /opt/gpdb_src \

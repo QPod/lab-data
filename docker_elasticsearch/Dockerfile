@@ -46,7 +46,7 @@ COPY --from=builder                 /opt/jdk                /opt/jdk
 COPY --from=builder --chown=1000:0  /opt/elasticsearch      /opt/elasticsearch
 
 RUN source /opt/utils/script-setup.sh \
- && setup_tini \
+ # && setup_tini \
  && ln -s /opt/jdk/bin/*     /usr/bin/ \
  && ln -s /opt/elasticsearch /usr/share/ \
  && groupadd --gid 1000 elasticsearch \
@@ -70,6 +70,6 @@ EXPOSE 9200 9300
 WORKDIR /opt/elasticsearch
 VOLUME /data/elasticsearch
 
-ENTRYPOINT ["tini", "--", "/opt/elasticsearch/docker-entrypoint.sh"]
+ENTRYPOINT ["/opt/elasticsearch/docker-entrypoint.sh"]
 
 CMD ["eswrapper"]
