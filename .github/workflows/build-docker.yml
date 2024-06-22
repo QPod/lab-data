@@ -53,15 +53,6 @@ jobs:
           source ./tool.sh
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
 
-  qpod_greenplum:
-    name: "greenplum"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          source ./tool.sh
-          build_image greenplum latest      docker_greenplum/Dockerfile && push_image
-
   qpod_postgres:
     name: "postgres-16-ext,postgres-15-ext"
     runs-on: ubuntu-latest
