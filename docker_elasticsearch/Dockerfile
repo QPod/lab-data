@@ -24,7 +24,7 @@ RUN set -ex \
  && find   /tmp/elasticsearch -name "License.java" | xargs -r -I {} cp {} . \
  && sed -i 's#this.type = type;#this.type = "platinum";#g' License.java \
  && sed -i 's#validate();#// validate();#g' License.java \
- && javac -cp "`ls lib/elasticsearch-${ES_VERSION}.jar`:`ls lib/elasticsearch-x-content-*.jar`:`ls lib/lucene-core-*.jar`:`ls modules/x-pack-core/x-pack-core-*.jar`" License.java \
+ && javac -cp "`ls lib/elasticsearch-${ES_VERSION}.jar`:`ls lib/elasticsearch-core-${ES_VERSION}.jar`:`ls lib/elasticsearch-x-content-*.jar`:`ls lib/lucene-core-*.jar`:`ls modules/x-pack-core/x-pack-core-*.jar`" License.java \
  && cd /tmp/build/src \
  && find /opt/elasticsearch/ -name "x-pack-core-*.jar" | xargs -r -I {} cp {} . \
  && jar xf x-pack-core-${ES_VERSION}.jar \
