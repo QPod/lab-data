@@ -33,7 +33,7 @@ setup_pgvectorscale() {
  && VER_PGVS=$(curl -sL https://github.com/timescale/pgvectorscale/releases.atom | grep 'releases/tag' | head -1 | grep -Po '\d[\d.]+' ) \
  && URL_PGVS="https://github.com/timescale/pgvectorscale/releases/download/${VER_PGVS}/pgvectorscale-${VER_PGVS}-pg${PG_MAJOR}-${ARCH}.zip" \
  && mkdir -pv /tmp/pgvectorscale/ && cd /tmp/pgvectorscale \
- && install_zip ${URL_PGVS} && mv /opt/pgvectorscal* /tmp/pgvectorscale/ 
+ && install_zip ${URL_PGVS} && mv /opt/pgvectorscal* /tmp/pgvectorscale/ \
  && dpkg -i *.deb
 }
 setup_pgvectorscale
