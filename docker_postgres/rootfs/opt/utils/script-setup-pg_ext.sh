@@ -27,6 +27,17 @@ setup_apache_age() {
 setup_apache_age
 
 
+setup_pgvectorscale() {
+ ## ref: https://github.com/timescale/pgvectorscale
+    ARcH="amd64" \
+ && VER_PGVS=$(curl -sL https://github.com/timescale/pgvectorscale/releases.atom | grep 'releases/tag' | head -1 | grep -Po '\d[\d.]+' ) \
+ && URL_PGVS="https://github.com/timescale/pgvectorscale/releases/download/${VER_PGVS}/pgvectorscale-${VER_PGVS}-pg${PG_MAJOR}-${ARCH}.zip" \
+ && install_zip ${URL_PGVS} && mv /opt/pgvectorscal* /tmp/pgvectorscale && cd /tmp/pgvectorscale \
+ && dpkg -i *.deb
+}
+setup_pgvectorscale
+
+
 setup_pgroonga(){
     ## ref1: https://pgroonga.github.io/tutorial/
     ## ref2: https://github.com/pgroonga/docker
