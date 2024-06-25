@@ -15,8 +15,9 @@ RUN set -x && . /opt/utils/script-utils.sh && . /opt/utils/script-setup-pg_ext_m
  && rm -rf /opt/utils/install_list_pgext.tpl.apt \
  ## Install extensions
  && . /opt/utils/script-setup-pg_ext.sh \
+ && PYTHON_VERSION=$(python -c 'from sys import version_info as v; print("%s.%s" % (v.major, v.minor))') \
  ## Hack: fix system python / conda python
- && cp -rf /opt/conda/lib/python3.11/platform.py.bak /opt/conda/lib/python3.11/platform.py \
+ && cp -rf "/opt/conda/lib/python${PYTHON_VERSION}/platform.py.bak" "/opt/conda/lib/python${PYTHON_VERSION}/platform.py" \
  && echo "Clean up" && list_installed_packages && install__clean
 
 USER postgres
