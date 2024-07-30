@@ -7,9 +7,10 @@ setup_confluent_kafka() {
   local VER_C_KAFKA_MAJOR=${VER_C_KAFKA_MINOR%.*}
   local URL_C_KAFKA="http://packages.confluent.io/archive/${VER_C_KAFKA_MAJOR}/confluent-community-${VER_C_KAFKA_MINOR}.tar.gz"
 
-  # Downlaod CKafka package and unzip to /opt/kafka
-  # ref: https://docs.confluent.io/platform/current/installation/installing_cp/zip-tar.html#get-the-software
-  install_tar_gz "${URL_C_KAFKA}" && mv /opt/confluent-* ${KAFKA_HOME} \
+ ## Downlaod CKafka package and unzip to /opt/kafka
+ ## ref: https://docs.confluent.io/platform/current/installation/installing_cp/zip-tar.html#get-the-software
+    echo "Downloading Kafka ${VER_C_KAFKA_MINOR} from: ${URL_C_KAFKA}" \
+ && install_tar_gz "${URL_C_KAFKA}" && mv /opt/confluent-* ${KAFKA_HOME} \
  && echo "Setting up kafka dirs:" && mkdir -pv /var/lib/kafka/data /etc/kafka/secrets \
  && ln -sf ${KAFKA_HOME}/etc /etc/confluent \
  && ls -alh ${KAFKA_HOME}/*
