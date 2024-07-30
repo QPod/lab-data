@@ -12,7 +12,8 @@ ENV CONDA_PREFIX=/opt/conda
 ENV JAVA_HOME=/opt/jdk
 ENV PATH=$PATH:${CONDA_PREFIX}/bin:${JAVA_HOME}/bin
 
-RUN source /opt/utils/script-setup.sh \
+RUN set -eux \
+ && source /opt/utils/script-setup.sh \
  && source /opt/utils/script-setup-db-clients.sh \
  && install_apt /opt/utils/install_list_base.apt \
  # && echo "Install tini" && setup_tini \

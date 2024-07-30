@@ -15,19 +15,21 @@ setup_confluent_kafka() {
  && ln -sf ${KAFKA_HOME}/etc /etc/confluent \
  && ls -alh ${KAFKA_HOME}/*
 
-  # CKafka docker images requires confluent docker utils for dub/cub command
-  pip install -U confluent-kafka https://github.com/confluentinc/confluent-docker-utils/archive/refs/heads/master.zip \
+ pip install -U confluent-kafka
+
+ ## CKafka docker images requires confluent docker utils for dub/cub command
+    pip install https://github.com/confluentinc/confluent-docker-utils/archive/refs/heads/master.zip \
  && install_zip https://github.com/confluentinc/confluent-docker-utils/archive/refs/heads/master.zip \
  && PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
  && cp -rf /opt/confluent-*/confluent ${PYTHON_SITE} \
  && rm -rf /opt/confluent-*
 
-  install_zip https://github.com/confluentinc/common-docker/archive/refs/heads/master.zip \
+    install_zip https://github.com/confluentinc/common-docker/archive/refs/heads/master.zip \
  && mv /opt/common-docker-master ${KAFKA_HOME}/common-docker \
  && mkdir -pv ${KAFKA_HOME}/etc/docker/ \
  && cp -rf ${KAFKA_HOME}/common-docker/base/include/etc/confluent/docker/* ${KAFKA_HOME}/etc/docker/
 
-  # CKafka base docker images are built with some scripts included
+  ## CKafka base docker images are built with some scripts included
   install_zip https://github.com/confluentinc/kafka-images/archive/refs/heads/master.zip
   mv /opt/kafka-images* ${KAFKA_HOME}/kafka-images
   cp -rf "${KAFKA_HOME}/kafka-images/kafka/include/etc/confluent/docker/"  "${KAFKA_HOME}/etc/"

@@ -5,7 +5,7 @@ FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG} as builder
 ARG ES_VERSION="8.14.1"
 
 
-RUN source /opt/utils/script-utils.sh \
+RUN set -eux && source /opt/utils/script-utils.sh \
  && ES_SOURCECODE="https://github.com/elastic/elasticsearch/archive/v${ES_VERSION}.tar.gz" \
  && ES_ARTIFACT="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}-linux-x86_64.tar.gz" \
  && install_tar_gz ${ES_SOURCECODE} && mv /opt/elasticsearch-* /tmp/elasticsearch \
@@ -17,7 +17,7 @@ RUN source /opt/utils/script-utils.sh \
  && sed -i -e 's/ES_DISTRIBUTION_TYPE=tar/ES_DISTRIBUTION_TYPE=docker/' /opt/elasticsearch/bin/elasticsearch-env \
  && mkdir -pv config/jvm.options.d
 
-RUN set -ex \
+RUN set -eux \
  && mkdir -pv /tmp/build/src    && cd /tmp/build \
  && ln -s  /opt/elasticsearch/lib     /tmp/build/ \
  && ln -s  /opt/elasticsearch/modules /tmp/build/ \
@@ -45,7 +45,7 @@ LABEL maintainer="haobibo@gmail.com"
 COPY --from=builder                 /opt/jdk                /opt/jdk
 COPY --from=builder --chown=1001:0  /opt/elasticsearch      /opt/elasticsearch
 
-RUN source /opt/utils/script-setup.sh \
+RUN set -eux && source /opt/utils/script-setup.sh \
  # && setup_tini \
  && ln -s /opt/jdk/bin/*     /usr/bin/ \
  && ln -s /opt/elasticsearch /usr/share/ \

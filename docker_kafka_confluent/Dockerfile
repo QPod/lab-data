@@ -16,7 +16,7 @@ ENV COMPONENT=kafka \
     KAFKA_VERSION="${KAFKA_VERSION}" \
     KAFKA_HOME=/opt/kafka
 
-RUN source /opt/utils/script-confluent-kafka.sh \
+RUN set -eux && source /opt/utils/script-confluent-kafka.sh \
  && echo "Install confluent-kafka:" && setup_confluent_kafka \
  && echo "Setup confluent Kafka to run in KRaft mode" && setup_confluent_kafka_kraft \
  && echo "Clean up" && list_installed_packages && install__clean
