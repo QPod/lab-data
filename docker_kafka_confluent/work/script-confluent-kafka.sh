@@ -3,7 +3,7 @@ source /opt/utils/script-utils.sh
 setup_confluent_kafka() {
   export KAFKA_HOME=/opt/kafka
 
-  local VER_C_KAFKA_MINOR=${KAFKA_VERSION:-"7.3.3"}
+  local VER_C_KAFKA_MINOR=${KAFKA_VERSION:-"7.7.0"}
   local VER_C_KAFKA_MAJOR=${VER_C_KAFKA_MINOR%.*}
   local URL_C_KAFKA="http://packages.confluent.io/archive/${VER_C_KAFKA_MAJOR}/confluent-community-${VER_C_KAFKA_MINOR}.tar.gz"
 
