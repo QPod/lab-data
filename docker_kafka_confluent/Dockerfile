@@ -3,7 +3,7 @@ ARG BASE_NAMESPACE
 ARG BASE_IMG="jdk-11"
 FROM ${BASE_NAMESPACE:+$BASE_NAMESPACE/}${BASE_IMG}
 
-ARG KAFKA_VERSION="7.3.3"
+ARG KAFKA_VERSION="7.7.0"
 
 LABEL maintainer="haobibo@gmail.com"
 
@@ -16,7 +16,7 @@ ENV COMPONENT=kafka \
     KAFKA_VERSION="${KAFKA_VERSION}" \
     KAFKA_HOME=/opt/kafka
 
-RUN source /opt/utils/script-confluent-kafka.sh \
+RUN set -eux && source /opt/utils/script-confluent-kafka.sh \
  && echo "Install confluent-kafka:" && setup_confluent_kafka \
  && echo "Setup confluent Kafka to run in KRaft mode" && setup_confluent_kafka_kraft \
  && echo "Clean up" && list_installed_packages && install__clean
