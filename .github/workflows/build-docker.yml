@@ -31,7 +31,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
-          build_image bigdata latest         docker_bigdata/Dockerfile       && push_image
+          build_image bigdata latest docker_bigdata/Dockerfile --build-arg "ARG_PROFILE_JAVA=base"  --build-arg "VERSION_JDK=11"
+          push_image
 
   qpod_elasticsearch:
     name: "elasticsearch"
@@ -83,8 +84,8 @@ jobs:
 
 
   ## Sync all images in this build (listed by "names") to mirror registry.
-  sync_images: # "qpod_bigdata", 
-    needs: ["qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres-17-ext", "qpod_postgres-16-ext", "qpod_postgres-15-ext"]
+  sync_images:
+    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres-17-ext", "qpod_postgres-16-ext", "qpod_postgres-15-ext"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
