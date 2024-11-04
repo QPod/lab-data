@@ -2,17 +2,15 @@ name: build-docker-images
 
 on:
   push:
-    branches: [ main ]
-    paths-ignore:
-      - "*.md"
+    branches: [ "main" ]
+    paths-ignore: [ "*.md" ]
 
   pull_request:
-    branches: [ main ]
-    paths-ignore:
-      - "*.md"
+    branches: [ "main" ]
+    paths-ignore: [ "*.md" ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch:  # Allows you to run this workflow manually from the Actions tab
+
 
 env:
   BUILDKIT_PROGRESS: "plain"  # Full logs for CI build.
@@ -53,20 +51,40 @@ jobs:
           source ./tool.sh
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
 
-  qpod_postgres:
-    name: "postgres-16-ext,postgres-15-ext"
+  qpod_postgres-17-ext:
+    name: "postgres-17-ext"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
+          build_image postgres-17-ext latest   docker_postgres/postgres-ext.Dockerfile --build-arg BASE_IMG=postgres-17
+          push_image postgres
+
+  qpod_postgres-16-ext:
+    name: "postgres-16-ext"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: |
           source ./tool.sh
           build_image postgres-16-ext latest   docker_postgres/postgres-ext.Dockerfile --build-arg BASE_IMG=postgres-16
+          push_image postgres
+
+  qpod_postgres-15-ext:
+    name: "postgres-15-ext"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          source ./tool.sh
           build_image postgres-15-ext latest   docker_postgres/postgres-ext.Dockerfile --build-arg BASE_IMG=postgres-15
           push_image postgres
 
+
   ## Sync all images in this build (listed by "names") to mirror registry.
-  sync_images:
-    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres"]
+  sync_images: # "qpod_bigdata", 
+    needs: ["qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres-17-ext", "qpod_postgres-16-ext", "qpod_postgres-15-ext"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
