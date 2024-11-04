@@ -52,7 +52,7 @@ jobs:
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
 
   qpod_postgres:
-    name: "postgres-16-ext,postgres-15-ext"
+    name: "postgres-17-ext,postgres-16-ext,postgres-15-ext"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
