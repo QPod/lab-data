@@ -65,8 +65,8 @@ sudo pip3 install conan
 
 ## 2 编译安装Cloudberry
 
-在第一台服务器上，以gpadmin用户，从Cloudberry的源代码编译安装Cloudberry到/opt/Cloudberry/
-本例中，下载的源代码来自于Cloudberry官方代码库的master branch: https://github.com/greenplum-db/Cloudberry.git
+在第一台服务器上，以gpadmin用户，从Cloudberry的源代码编译安装Cloudberry到/opt/gpdb/
+本例中，下载的源代码来自于Cloudberry官方代码库的master branch: https://github.com/apache/cloudberry.git
 master branch编译出的版本为基于PostgreSQL 12.x的版本，且该版本可以只使用Python3。
 
 ### 2.1 准备Python依赖
@@ -86,14 +86,14 @@ sudo bash ./Miniconda3-latest-Linux-x86_64.sh -f -b -p /opt/conda \
 
 ```shell
 # Configure the project first
-PYTHON=/opt/conda/bin/python3 ./configure --prefix=/opt/Cloudberry \
+PYTHON=/opt/conda/bin/python3 ./configure --prefix=/opt/gpdb \
 --with-perl --with-python --with-libxml --with-gssapi --with-openssl 
 
 # Do the compile and installation
 sudo make -j16 && sudo make install -j16
 
 # Change owner of the installed directory
-sudo chown -R gpadmin:gpadmin /opt/Cloudberry
+sudo chown -R gpadmin:gpadmin /opt/gpdb
 ```
 
 ### 2.3 配置Cloudberry的路径
@@ -101,7 +101,7 @@ sudo chown -R gpadmin:gpadmin /opt/Cloudberry
 在gpadmin用户下，执行下面的命令，使gpadmin登录后能默认找到GBDP各组件，如gpssh、gpscp等。
 
 ```shell
-echo "source /opt/Cloudberry/greenplum_path.sh" >> ~/.bashrc
+echo "source /opt/gpdb/greenplum_path.sh" >> ~/.bashrc
 ```
 
 ### 2.4 将GDPB自带的python模块软链接到Python的包目录
@@ -110,14 +110,14 @@ Cloudberry自带了一个名为`gppylib`的Python包，用来管理和控制Clou
 
 ```shell
 PYTHON_SITE=$(python3 -c 'import sys;print(list(filter(lambda s: "site" in s, sys.path))[0])') \
- && sudo ln -s /opt/Cloudberry/lib/python/* ${PYTHON_SITE}/
+ && sudo ln -s /opt/gpdb/lib/python/* ${PYTHON_SITE}/
 ```
 
 ### 2.5. 配置服务器列表文件
 
-在第1台服务器上，安装Cloudberry目录文件到/opt/Cloudberry之后，进行下面的操作：
+在第1台服务器上，安装Cloudberry目录文件到/opt/gpdb之后，进行下面的操作：
 
-创建服务器ID列表文件：在/opt/Cloudberry/conf目录下创建下面的两个文件（hostlist和seg_host）
+创建服务器ID列表文件：在/opt/gpdb/conf目录下创建下面的两个文件（hostlist和seg_host）
 
 ```txt
 # hostlist
@@ -138,12 +138,12 @@ Cloudberry-003
 
 ```bash
 gpssh-exkeys -f hostlist
-gpscp -f seg_host /opt/conda /opt/Cloudberry =:~/
+gpscp -f seg_host /opt/conda /opt/gpdb =:~/
 ```
 
 ### 2.7 配置各segment服务器
 
-通过执行`/opt/Cloudberry/bin/gpssh -f /opt/Cloudberry/conf/hostlist`来一起操作各个服务器。
+通过执行`/opt/gpdb/bin/gpssh -f /opt/gpdb/conf/hostlist`来一起操作各个服务器。
 
 在每台服务器上，修改文件 /etc/hosts，包含各个服务器的主机名和IP地址，使各个服务器能够通过hostname互访
 例如通过下面的echo命令来追加到/etc/hosts文件（参照步骤1.4）：
@@ -210,8 +210,8 @@ vm.dirty_bytes = 4294967296
 初始化的文件模板可以通过Cloudberry自带的文件，基于此进行修改：
 
 ```shell
-mkdir -pv /opt/Cloudberry/conf
-cp /opt/Cloudberry/docs/cli_help/gpconfigs/gpinitsystem_config /opt/Cloudberry/conf/gpinitsystem_config
+mkdir -pv /opt/gpdb/conf
+cp /opt/gpdb/docs/cli_help/gpconfigs/gpinitsystem_config /opt/gpdb/conf/gpinitsystem_config
 mkdir -pv /data/Cloudberry/coordinator
 mkdir -pv /data/Cloudberry/primary1 /data/Cloudberry/primary2 /data/Cloudberry/mirror1 /data/Cloudberry/mirror2
 ```
@@ -227,7 +227,7 @@ ARRAY_NAME="Cloudberry"
 
 SEG_PREFIX="gpseg"
 
-MACHINE_LIST_FILE="/opt/Cloudberry/conf/seg_host"
+MACHINE_LIST_FILE="/opt/gpdb/conf/seg_host"
 
 # Master结点主机名
 COORDINATOR_HOSTNAME=Cloudberry-001
