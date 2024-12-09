@@ -40,7 +40,7 @@ setup_pg_analytics() {
  && wget ${URL_PG_ANALYTICS} \
  && dpkg -i *.deb
 }
-setup_pg_analytics
+# setup_pg_analytics
 
 
 setup_apache_age() {
