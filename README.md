@@ -20,5 +20,5 @@ Building blocks for the following big data project use cases are supported in th
 - [Flink / Spark](https://hub.docker.com/r/qpod/bigdata)
 - [Kafka](https://hub.docker.com/r/qpod/kafka)
 - [Postgresql with Extensions](https://hub.docker.com/search?q=qpod%2Fpostgres-): including pgvector, age, and [many others](https://github.com/QPod/lab-data/tree/main/docker_postgres)
-- [GreenplumDB](https://hub.docker.com/r/qpod/greenplum)
+- [Apache Cloudberry](https://cloudberry.apache.org/)
 - [Elasticsearch](https://hub.docker.com/r/qpod/elasticsearch)

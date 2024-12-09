@@ -10,7 +10,7 @@ echo "include_dir='./conf.d'" >> ${PGDATA}/postgresql.conf
 tail ${PGDATA}/postgresql.conf
 
 cat <<EOT >> ${PGDATA}/conf.d/pg-ext.conf
-shared_preload_libraries = 'citus,timescaledb,vector,pgaudit,pgautofailover,pg_qualstats,pg_squeeze,pg_net'
+shared_preload_libraries = 'citus,timescaledb,vector,pg_search,pg_analytics,pgaudit,pgautofailover,pg_qualstats,pg_squeeze,pg_net'
 cron.database_name='${POSTGRES_DB:-postgres}'
 EOT
 cat ${PGDATA}/conf.d/*
