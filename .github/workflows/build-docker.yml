@@ -52,15 +52,15 @@ jobs:
           source ./tool.sh
           build_image kafka latest          docker_kafka_confluent/Dockerfile && push_image
 
-  qpod_postgres-17-ext:
-    name: "postgres-17-ext"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          source ./tool.sh
-          build_image postgres-17-ext latest   docker_postgres/postgres-ext.Dockerfile --build-arg BASE_IMG=postgres-17
-          push_image postgres
+  # qpod_postgres-17-ext:  # some extension is not yet built for PG 17
+  #   name: "postgres-17-ext"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: |
+  #         source ./tool.sh
+  #         build_image postgres-17-ext latest   docker_postgres/postgres-ext.Dockerfile --build-arg BASE_IMG=postgres-17
+  #         push_image postgres
 
   qpod_postgres-16-ext:
     name: "postgres-16-ext"
@@ -85,7 +85,7 @@ jobs:
 
   ## Sync all images in this build (listed by "names") to mirror registry.
   sync_images:
-    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres-17-ext", "qpod_postgres-16-ext", "qpod_postgres-15-ext"]
+    needs: ["qpod_bigdata", "qpod_elasticsearch", "qpod_kafka_confluent", "qpod_postgres-15-ext", "qpod_postgres-16-ext"] #  , "qpod_postgres-17-ext"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
