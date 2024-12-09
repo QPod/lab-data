@@ -1,10 +1,10 @@
 echo "To install PG extensions: $(cat /opt/utils/install_list_pgext.apt)"
 install_apt /opt/utils/install_list_pgext.apt
 
-if [[ ${PG_MAJOR} == "15" ]]; then
-    # Fix pgagent for PG 15
-    rm -rf /usr/share/postgresql/15/extension/pgagent*
-    mv     /usr/share/postgresql/16/extension/pgagent* /usr/share/postgresql/15/extension/    
+if [ ${PG_MAJOR} != "17" ]; then
+    # Fix pgagent for PG 15 / 16
+    rm -rf /usr/share/postgresql/${PG_MAJOR}/extension/pgagent*
+    mv     /usr/share/postgresql/17/extension/pgagent* /usr/share/postgresql/${PG_MAJOR}/extension/
 fi
 
 mv /var/lib/postgresql/extension/* /usr/share/postgresql/${PG_MAJOR}/extension/
